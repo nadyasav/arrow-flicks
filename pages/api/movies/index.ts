@@ -1,17 +1,19 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { API_ROUTES } from '../../../constants/constants';
+import axios from 'axios';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const url = `${API_ROUTES.MOVIES}?api_key=${process.env.API_KEY}`;
-  let statusCode = 200;
-  try {
-    const resObj = await fetch(url)
-      .then(resData => {
-        statusCode = resData.status;
-        return resData.json();
-      });
-    res.status(statusCode).json(resObj);
-  } catch (error) {
-    res.status(500).json({ error: 'failed to fetch data' });
-  }
+
+  axios.get(url, { params: req.query })
+    .then((resObj) => {
+      res.status(resObj.status).json(resObj.data);
+    })
+    .catch((error) => {
+      if(error.response) {
+        res.status(error.response.status).json(error.response.data);
+      } else {
+        res.status(500).json({ error: 'failed to fetch data' });
+      }
+    });
 }

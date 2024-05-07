@@ -1,37 +1,31 @@
 import styles from './index.module.css';
-import { useEffect, useState } from "react";
-import { Movie, MoviesRes } from "../types/types";
-import { request } from "../utils/request";
+import { useEffect } from "react";
 import MovieCard from "../components/movieCard/MovieCard";
+import { useAppDispatch, useAppSelector } from '../store/redux-hooks';
+import { fetchMovies } from '../store/moviesSlice';
 
 export default function IndexPage() {
-  const [movies, setMovies] = useState<Array<Movie>>();
-  const [error, setError] = useState<boolean>();
-
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json'
-    }
+  const dispatch = useAppDispatch();
+  const { movies } = useAppSelector((state) => state.movies);
+  const searchParams = {
+    primary_release_year: 2024,
+    with_genres: '14',
+    "vote_average.lte": 4.5,
+    "vote_average.gte": 4,
+    sort_by: 'original_title.asc',
+    page: 1
   };
 
-  const requestMovies = async () => {
-    const { error, dataObj } = await request<MoviesRes>(`api/movies`);
-    setError(error);
-    if(dataObj) {
-      console.log(dataObj);
-      setMovies(dataObj.results);
-    }
-  }
-
   useEffect(() => {
-    requestMovies();
+    dispatch(
+      fetchMovies(searchParams)
+    );
   }, []);
 
   return (
     <div>
       <div className={styles.moviesCards}>
-        {movies?.map((item) =>
+        { movies && movies.map((item) =>
           <MovieCard key={item.original_title} {...item}/> )}
       </div>
     </div>

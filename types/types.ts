@@ -1,3 +1,9 @@
+export enum RequesStatus {
+    PENDING = 'pending',
+    FULFILLED = "fulfilled",
+    REJECTED = "rejected"
+}
+
 export interface MoviesRes{
     page: number;
     results: Array<Movie>;
@@ -19,3 +25,13 @@ export interface ErrorRes {
     status_message: string;
     success: false;
 }
+
+export interface MoviesSearchParams {
+    language?: string;
+    with_genres?: string;
+    primary_release_year?: number;
+    "vote_average.lte"?: number;
+    "vote_average.gte"?: number;
+    sort_by?: string;
+    page?: number;
+  }
