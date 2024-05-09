@@ -1,0 +1,9 @@
+.item{
+    display: flex;
+    gap: 0 8px;
+    line-height: var(--mantine-line-height-sm);
+}
+
+.key{
+    color: var(--color-grey-3);
+}

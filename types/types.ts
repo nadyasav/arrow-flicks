@@ -12,6 +12,7 @@ export interface MoviesRes{
 }
 
 export interface Movie {
+    id: number;
     original_title: string;
     poster_path: string;
     release_date: string;
@@ -34,4 +35,20 @@ export interface MoviesSearchParams {
     "vote_average.gte"?: number;
     sort_by?: string;
     page?: number;
-  }
+}
+
+export interface Genre {
+    id: number;
+    name: string;
+}
+
+export interface IMovieInfoData {
+    key: string;
+    value: string;
+}
+
+export type MovieCardSize = 'lg' | 'sm';
+export interface IMovieInfoList {
+    data: Array<IMovieInfoData>;
+    size?: MovieCardSize;
+}

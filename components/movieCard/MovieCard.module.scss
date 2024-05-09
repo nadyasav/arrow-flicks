@@ -1,0 +1,61 @@
+.card {
+    width: 100%;
+    min-height: 218px;
+    padding: 24px;
+    background-color: var(--color-white);
+    border-radius: var(--mantine-radius-lg);
+    display: flex;
+    gap: 0 16px;
+}
+
+.imgBox {
+    flex-shrink: 0;
+    width: 119px;
+    height: 170px;
+    background-color: var(--color-grey-0);
+}
+
+.empty.imgBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lg .imgBox {
+    width: 250px;
+    height: 352px;
+}
+
+.description {
+    width: 100%;
+}
+
+.description, .descriptionTop {
+    display: flex;
+    flex-direction: column;
+    gap: 8px 0;
+}
+
+.movieInfo {
+    margin-top: auto;
+}
+
+.data {
+    line-height: var(--mantine-line-height-sm);
+    color: var(--color-grey-4);
+}
+
+.rating {
+    display: flex;
+    gap: 0 4px;
+    align-items: center;
+}
+
+.ratingAverage {
+    font-weight: var(--font-weight-lg);
+}
+
+.ratingCount {
+    margin-left: 4px;
+    color: var(--color-grey-4);
+}

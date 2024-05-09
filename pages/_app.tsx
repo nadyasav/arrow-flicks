@@ -4,6 +4,7 @@ import { MantineProvider } from "@mantine/core";
 import { resolver, theme } from "../theme";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
+import '../styles/global.scss';
 
 export default function App({ Component, pageProps }: any) {
   return (

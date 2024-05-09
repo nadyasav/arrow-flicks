@@ -1,0 +1,12 @@
+.movieCards {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 980px;
+    width: 100%;
+    gap: 16px;
+
+    &Item {
+        width: calc(50% - 8px);
+    }
+}
