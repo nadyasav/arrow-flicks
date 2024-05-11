@@ -1,0 +1,9 @@
+.card {
+    width: 100%;
+    min-height: 218px;
+    padding: 24px;
+    background-color: var(--color-white);
+    border-radius: var(--mantine-radius-lg);
+    display: flex;
+    gap: 0 16px;
+}

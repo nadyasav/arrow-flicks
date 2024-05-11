@@ -1,0 +1,18 @@
+.description {
+    width: 100%;
+}
+
+.description, .descriptionTop {
+    display: flex;
+    flex-direction: column;
+    gap: 8px 0;
+}
+
+.genres {
+    margin-top: auto;
+}
+
+.data {
+    line-height: var(--mantine-line-height-sm);
+    color: var(--color-grey-4);
+}

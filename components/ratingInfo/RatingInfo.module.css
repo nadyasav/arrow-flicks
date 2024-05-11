@@ -1,0 +1,14 @@
+.ratingInfo {
+    display: flex;
+    gap: 0 4px;
+    align-items: center;
+}
+
+.ratingAverage {
+    font-weight: var(--font-weight-lg);
+}
+
+.ratingCount {
+    margin-left: 4px;
+    color: var(--color-grey-4);
+}

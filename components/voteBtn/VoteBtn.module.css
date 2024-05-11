@@ -1,0 +1,7 @@
+.voteBtnBox {
+    display: flex;
+    align-items: center;
+    gap: 0 4px;
+    font-weight: var(--font-weight-lg);
+    line-height: var(--mantine-line-height-sm);
+}

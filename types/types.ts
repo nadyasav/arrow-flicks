@@ -11,14 +11,26 @@ export interface MoviesRes{
     total_results: number;
 }
 
-export interface Movie {
+export interface IMovie {
     id: number;
     original_title: string;
     poster_path: string;
     release_date: string;
     vote_average: number;
     vote_count: number;
+}
+export interface Movie extends IMovie{
     genre_ids: Array<number>;
+}
+
+export interface MovieDetails extends IMovie{
+    runtime: string;
+    budget: string;
+    revenue: string;
+    genres: Array<Genre>;
+    overview: string;
+    production_companies: string;
+    videos: string;
 }
 
 export interface ErrorRes {
@@ -42,13 +54,4 @@ export interface Genre {
     name: string;
 }
 
-export interface IMovieInfoData {
-    key: string;
-    value: string;
-}
-
 export type MovieCardSize = 'lg' | 'sm';
-export interface IMovieInfoList {
-    data: Array<IMovieInfoData>;
-    size?: MovieCardSize;
-}
