@@ -1,4 +1,3 @@
-'use client'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { MoviesSearchParams, Movie, RequesStatus, MoviesRes } from '../types/types';
 import axios from 'axios';
@@ -23,7 +22,7 @@ export const fetchMovies = createAsyncThunk<MoviesRes, MoviesSearchParams | unde
         if (error.response) {
           return rejectWithValue(error.response.data);
         } else {
-          return rejectWithValue('Something went wrong, please try reloading the page.');
+          return rejectWithValue('failed to fetch data');
         }
       });
     },

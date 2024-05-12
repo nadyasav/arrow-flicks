@@ -1,10 +1,10 @@
-import styles from './MovieCardLink.module.css';
-import { MovieDetails } from '../../../types/types';
+import styles from './MovieCardDetailed.module.css';
+import { MovieSingle } from '../../../types/types';
 import CardPoster from '../parts/cardPoster/CardPoster';
 import CardDescription from '../parts/cardDescription/CardDescription';
 
 interface IMovieCardDetailed {
-  movie: MovieDetails;
+  movie: MovieSingle;
 }
 
 export default function MovieCardDetailed({ movie }: IMovieCardDetailed) {
@@ -12,8 +12,8 @@ export default function MovieCardDetailed({ movie }: IMovieCardDetailed) {
 
   return (
     <div className={styles.card}>
-      <CardPoster src={movie.poster_path} alt={movie.original_title}/>
-      <CardDescription movie={movie} voteBtnOnClick={handleVoteBtnClick}>
+      <CardPoster src={movie.poster_path} alt={movie.original_title} size='lg'/>
+        <CardDescription movie={movie} voteBtnOnClick={handleVoteBtnClick}>
       </CardDescription>
     </div>
   );

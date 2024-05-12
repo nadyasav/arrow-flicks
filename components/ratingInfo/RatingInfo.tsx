@@ -16,7 +16,6 @@ export const RatingInfo = (props: IRatingInfo) => {
         <div className={styles.ratingInfo}>
             <IconStarFilled size={26} color={iconColor}/>
             <span className={styles.ratingAverage}>{props.average}</span>
-            {props.count}
             <span className={styles.ratingCount}>({getStrRoundedNumber(props.count)})</span>
         </div>
     );

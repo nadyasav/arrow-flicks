@@ -23,14 +23,35 @@ export interface Movie extends IMovie{
     genre_ids: Array<number>;
 }
 
-export interface MovieDetails extends IMovie{
-    runtime: string;
-    budget: string;
-    revenue: string;
+interface MovieProductionCompanies{
+    id: number;
+    logo_path: string | null;
+    name: string;
+    origin_country: string;
+}
+
+interface MovieVideo {
+    id: string;
+    iso_639_1: string;
+    iso_3166_1: string;
+    key: string;
+    name: string;
+    official: boolean;
+    published_at: string;
+    site: string;
+    size: number;
+    type: string;
+}
+export interface MovieSingle extends IMovie{
+    runtime: number;
+    budget: number;
+    revenue: number;
     genres: Array<Genre>;
     overview: string;
-    production_companies: string;
-    videos: string;
+    production_companies: Array<MovieProductionCompanies>;
+    videos?: {
+        results: Array<MovieVideo>
+    };
 }
 
 export interface ErrorRes {

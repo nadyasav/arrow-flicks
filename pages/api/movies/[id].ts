@@ -3,7 +3,7 @@ import { API_ROUTES } from '../../../constants/constants';
 import axios from 'axios';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { id } = req.query
+    const { id } = req.query;
     const url = `${API_ROUTES.MOVIE}/${id}?api_key=${process.env.API_KEY}`;
 
     axios.get(url, { params: req.query })
