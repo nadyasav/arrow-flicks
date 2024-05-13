@@ -1,0 +1,5 @@
+.cardContainer {
+    padding: 24px;
+    background-color: var(--color-white);
+    border-radius: var(--mantine-radius-lg);
+}

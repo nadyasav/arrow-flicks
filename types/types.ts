@@ -23,14 +23,14 @@ export interface Movie extends IMovie{
     genre_ids: Array<number>;
 }
 
-interface MovieProductionCompanies{
+export interface MovieProductionCompanies{
     id: number;
     logo_path: string | null;
     name: string;
     origin_country: string;
 }
 
-interface MovieVideo {
+export interface MovieVideo {
     id: string;
     iso_639_1: string;
     iso_3166_1: string;
@@ -76,3 +76,8 @@ export interface Genre {
 }
 
 export type MovieCardSize = 'lg' | 'sm';
+
+export interface CardInfoListData {
+    key: string;
+    value: string;
+}

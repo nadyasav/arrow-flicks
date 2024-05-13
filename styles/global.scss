@@ -60,3 +60,17 @@ h2 {
   font-size: var(--mantine-font-size-lg);
   color: var(--color-purple-4);
 }
+
+h3 {
+  font-weight: var(--font-weight-xl);
+  font-size: var(--mantine-font-size-lg);
+  line-height: var(--mantine-line-height-xs);
+  color: var(--color-black);
+}
+
+h4 {
+  font-weight: var(--font-weight-xl);
+  font-size: var(--mantine-font-size-md);
+  line-height: var(--mantine-line-height-md);
+  color: var(--color-black);
+}

@@ -1,3 +1,9 @@
+.infoList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px 0;
+}
+
 .listItem{
     display: flex;
     gap: 0 8px;
@@ -6,4 +12,8 @@
 
 .key{
     color: var(--color-grey-3);
+}
+
+.lg .key{
+    width: 140px;
 }

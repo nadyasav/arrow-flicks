@@ -28,3 +28,15 @@ export function getGenresStrById(ids: Array<number>, genres: Array<Genre>): stri
     }
     return resultStr;
 }
+
+export function getGenresStr(genres: Array<Genre>): string {
+    let resultStr = '';
+    genres.forEach((item) => {
+        if(resultStr) {
+            resultStr += `, ${item.name}`;
+        } else {
+            resultStr = item.name;
+        }
+    });
+    return resultStr;
+}

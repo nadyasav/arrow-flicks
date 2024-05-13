@@ -1,14 +1,9 @@
-import { MovieCardSize } from '../../../../types/types';
+import { CardInfoListData, MovieCardSize } from '../../../../types/types';
 import styles from './CardInfoList.module.css';
 import cn from 'classnames';
 
-interface IMovieInfoData {
-  key: string;
-  value: string;
-}
-
 interface ICardInfoList {
-  data: Array<IMovieInfoData>;
+  data: Array<CardInfoListData>;
   size?: MovieCardSize;
 }
 
