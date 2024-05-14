@@ -8,6 +8,11 @@
     gap: 8px 0;
 }
 
+.descriptionTop {
+    position: relative;
+    padding-right: 55px;
+}
+
 .genres {
     margin-top: auto;
 }
@@ -15,4 +20,11 @@
 .data {
     line-height: var(--mantine-line-height-sm);
     color: var(--color-grey-4);
+}
+
+.voteBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
 }

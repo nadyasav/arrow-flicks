@@ -16,23 +16,21 @@ export default function CardDescription({ movie, children, voteBtnOnClick }: ICa
   };
 
   return (
-    <>
-      <div className={styles.description}>
-        <div className={styles.descriptionTop}>
-          <h2>{movie.original_title}</h2>
-          {movie.release_date && <p className={styles.data}>{new Date(movie.release_date).getFullYear()}</p>}
-          <div>
-            <RatingInfo {...votes}/>
-          </div>
+    <div className={styles.description}>
+      <div className={styles.descriptionTop}>
+        <h2>{movie.original_title}</h2>
+        {movie.release_date && <p className={styles.data}>{new Date(movie.release_date).getFullYear()}</p>}
+        <div>
+          <RatingInfo {...votes}/>
         </div>
-        { children &&
-        <div className={styles.genres}>
-          {children}
-        </div>}
+        <div className={styles.voteBtn}>
+          <VoteBtn onClick={voteBtnOnClick} rating={0}/>
+        </div>
       </div>
-      <div>
-        <VoteBtn onClick={voteBtnOnClick} rating={0}/>
-      </div>
-    </>
+      { children &&
+      <div className={styles.genres}>
+        {children}
+      </div>}
+    </div>
   );
 }

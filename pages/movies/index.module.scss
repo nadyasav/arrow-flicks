@@ -1,9 +1,15 @@
-.movieCards {
+.movies {
     margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
     max-width: 980px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px 0;
+}
+
+.movieCards {
+    display: flex;
+    flex-wrap: wrap;
     gap: 16px;
 
     &Item {

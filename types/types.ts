@@ -4,6 +4,50 @@ export enum RequesStatus {
     REJECTED = "rejected"
 }
 
+export enum MoviesSearchKeys {
+    LANGUAGE = 'language',
+    WITH_GENRES = "with_genres",
+    PRIMARY_RELEASE_YEAR = "primary_release_year",
+    VOTE_AVERAGE_LTE = "vote_average.lte",
+    VOTE_AVERAGE_GTE = "vote_average.gte",
+    SORT_BY = "sort_by",
+    PAGE = "page"
+}
+
+export type SortBy = 
+    'original_title.asc' |
+    'original_title.desc' |
+    'popularity.asc' |
+    'popularity.desc' |
+    'revenue.asc' |
+    'revenue.desc' |
+    'primary_release_date.asc' |
+    'title.desc' |
+    'primary_release_date.desc' |
+    'vote_average.asc' |
+    'vote_average.desc' |
+    'vote_count.asc' |
+    'vote_count.desc';
+
+export type Language = 'en-US';
+
+export interface MoviesSearchParams {
+    language?: Language;
+    with_genres?: string;
+    primary_release_year?: number;
+    "vote_average.lte"?: number;
+    "vote_average.gte"?: number;
+    sort_by?: SortBy;
+    page?: number;
+}
+
+export interface GenreListEl {
+    id: number;
+    name: string;
+}
+
+export type GenresList = Array<GenreListEl>
+
 export interface MoviesRes{
     page: number;
     results: Array<Movie>;
@@ -58,16 +102,6 @@ export interface ErrorRes {
     status_code: number;
     status_message: string;
     success: false;
-}
-
-export interface MoviesSearchParams {
-    language?: string;
-    with_genres?: string;
-    primary_release_year?: number;
-    "vote_average.lte"?: number;
-    "vote_average.gte"?: number;
-    sort_by?: string;
-    page?: number;
 }
 
 export interface Genre {
