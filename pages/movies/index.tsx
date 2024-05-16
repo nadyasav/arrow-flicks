@@ -1,31 +1,42 @@
 import styles from './index.module.scss';
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from '../../store/redux-hooks';
 import { fetchMovies } from '../../store/moviesSlice';
 import MovieCardLink from '../../components/movieCard/movieCardLink/MovieCardLink';
 import { fetchGenresList } from '../../store/genresListSlice';
-import { Filters } from '../../components/filters/Filters';
+import Filters from '../../components/filters/Filters';
 
 export default function IndexPage() {
   const dispatch = useAppDispatch();
   const { movies } = useAppSelector((state) => state.movies);
   const { genresList } = useAppSelector((state) => state.genresList);
-  const searchParams = {
-    primary_release_year: 2024,
-    //with_genres: '14',
-    /*"vote_average.lte": 5,
-    "vote_average.gte": 4,*/
-    //sort_by: 'original_title.asc',
-    //page: 2
-  };
+  const { withGenres, primaryReleaseYear, voteAverageLte, voteAverageGte, sortBy } = useAppSelector((state) => state.filters);
 
   useEffect(() => {
-    dispatch(fetchGenresList());
+    if(!genresList.length) {
+      dispatch(fetchGenresList());
+    }
+  }, [dispatch, genresList.length]);
+
+  const updateMovies = useCallback(() => {
+    const searchParams = {
+      primary_release_year: primaryReleaseYear,
+      with_genres: !!withGenres?.length ? withGenres : undefined,
+      "vote_average.lte": voteAverageLte,
+      "vote_average.gte": voteAverageGte,
+      sort_by: sortBy
+    };
+
     dispatch(fetchMovies(searchParams));
-  }, []);
+  },[dispatch, primaryReleaseYear, sortBy, voteAverageGte, voteAverageLte, withGenres])
+
+  useEffect(() => {
+    updateMovies();
+  }, [dispatch, updateMovies]);
 
   return (
     <div className={styles.movies}>
+      <h1 className={styles.title}>Movies</h1>
       <div className={styles.movieFilters}>
         { genresList && <Filters genres={genresList}/> }
       </div>

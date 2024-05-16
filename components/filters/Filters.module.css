@@ -1,4 +1,42 @@
-.select {
-    max-width: 283px;
+.filters {
+    display: flex;
+    flex-direction: column;
+    gap: 24px 0;
+}
+.filtersTop {
+    display: flex;
+    align-items: flex-end;
+    gap: 24px 16px;
+}
+.sort {
+    align-self: flex-end;
+}
+.genres, .sort {
+    max-width: 284px;
     width: 100%;
+}
+.ratings {
+    display: flex;
+    align-items: flex-end;
+    gap: 0 8px;
+}
+.resetBtn {
+    margin-left: auto;
+    height: 42px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 143%;
+    color: var(--color-purple-4);
+    background-color: transparent;
+
+    &:hover {
+        color: var(--color-purple-3);
+    }
+    &:active {
+        color: var(--color-purple-5);
+    }
+
+    &:disabled {
+        color: var(--color-grey-5);
+    }
 }

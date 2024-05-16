@@ -13,7 +13,7 @@ interface IMovieCardLink {
 }
 
 export default function MovieCardLink({ movie, genres }: IMovieCardLink) {
-  const [ genresStr ] = useState<string>(getGenresStrById(movie.genre_ids, genres));
+  const [ genresStr ] = useState<string>(movie.genre_ids ? getGenresStrById(movie.genre_ids, genres) : '');
   const handleVoteBtnClick = () => {};
 
   return (

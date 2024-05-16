@@ -1,15 +1,4 @@
-import { Genre } from "../types/types";
-
-export function getGenresById(ids: Array<number>, genres: Array<Genre>): Array<Genre> {
-    let resultArr = [];
-    for(let i = 0; i <= ids.length; i++){
-        const genre = genres.find((item) => item.id == ids[i]);
-        if(genre){
-            resultArr.push(genre);
-        }
-    }
-    return resultArr;
-}
+import { Genre, GenresList } from "../types/types";
 
 export function getGenresStrById(ids: Array<number>, genres: Array<Genre>): string {
     let resultStr = '';
@@ -39,4 +28,22 @@ export function getGenresStr(genres: Array<Genre>): string {
         }
     });
     return resultStr;
+}
+
+export const getGenresNamesArr = (genres: GenresList) => {
+    return genres.map((item) => item.name);
+};
+
+export const getGenresIdsByNames = (names: Array<string>, genres: GenresList) => {
+    let genresIds = [];
+    for(let i = 0; i < names.length; i++){
+        const genre = genres.find((item) => item.name == names[i]);
+
+        if(genre !== undefined) {
+            genresIds.push(genre.id.toString());
+        } else {
+            continue;
+        }
+    }
+    return genresIds;
 }

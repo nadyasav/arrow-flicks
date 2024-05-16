@@ -74,3 +74,25 @@ h4 {
   line-height: var(--mantine-line-height-md);
   color: var(--color-black);
 }
+
+//mantine global
+.mantine-Input-input {
+  min-height: 42px;
+  font-size: var(--mantine-font-size-sm);
+  font-weight: var(--font-weight-sm);
+  line-height: var(--mantine-line-height-lg);
+  caret-color: var(--color-purple-4);
+  color: var(--color-black);
+
+  &::placeholder {
+    color: var(--color-grey-3);
+  }
+}
+
+.mantine-InputWrapper-label {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 140%;
+  color: var(--color-black);
+  margin-bottom: 8px;
+}

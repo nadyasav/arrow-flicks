@@ -33,7 +33,7 @@ export type Language = 'en-US';
 
 export interface MoviesSearchParams {
     language?: Language;
-    with_genres?: string;
+    with_genres?: Array<string>;
     primary_release_year?: number;
     "vote_average.lte"?: number;
     "vote_average.gte"?: number;
@@ -47,6 +47,14 @@ export interface GenreListEl {
 }
 
 export type GenresList = Array<GenreListEl>
+
+export interface IFilters{
+    withGenres: Array<string> | undefined;
+    primaryReleaseYear: number | undefined;
+    voteAverageLte: number | undefined;
+    voteAverageGte: number | undefined;
+    sortBy: SortBy | undefined;
+  }
 
 export interface MoviesRes{
     page: number;

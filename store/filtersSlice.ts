@@ -1,20 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { SortBy } from '../types/types';
-
-interface IFilters{
-  withGenres: string | undefined;
-  primaryReleaseYear: number | undefined;
-  voteAverageLte: number | undefined;
-  voteAverageGte: number | undefined;
-  sortBy: SortBy | undefined;
-}
+import { IFilters } from '../types/types';
 
 const initialState: IFilters = {
     withGenres: undefined,
     primaryReleaseYear: undefined,
     voteAverageLte: undefined,
     voteAverageGte: undefined,
-    sortBy: undefined
+    sortBy: "popularity.desc"
 };
 
 const filtersSlice = createSlice({
@@ -41,10 +33,10 @@ const filtersSlice = createSlice({
       state.primaryReleaseYear = undefined;
       state.voteAverageLte = undefined;
       state.voteAverageGte = undefined;
-      state.sortBy = undefined;
+      state.sortBy = "popularity.desc";
     },
   },
 });
 
-export const { setGenres } = filtersSlice.actions;
+export const { setGenres, setVoteAverageGte, setVoteAverageLte, setSortBy, resetFilters } = filtersSlice.actions;
 export default filtersSlice;

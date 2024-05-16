@@ -7,6 +7,7 @@ import styles from './index.module.css';
 import { MovieSingle } from "../../../types/types";
 import MovieDetails from "../../../components/movieDetails/MovieDetails";
 import { Anchor, Breadcrumbs } from "@mantine/core";
+import Link from "next/link";
 
 export default function Movie() {
   const router = useRouter();
@@ -18,9 +19,9 @@ export default function Movie() {
     { title: 'Movies', href: '/movies' },
     { title: movie?.original_title, href: `/movies/${id}` },
   ].map((item, index) => (
-    <Anchor href={item.href} key={index}>
+    <Link href={item.href} key={index}>
       {item.title}
-    </Anchor>
+    </Link>
   ));
 
   useEffect(

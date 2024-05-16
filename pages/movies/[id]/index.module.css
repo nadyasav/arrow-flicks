@@ -10,6 +10,7 @@
 .breadcrumbs :global(.mantine-Breadcrumbs-breadcrumb) {
     font-size: var(--mantine-font-size-sm);
     line-height: var(--mantine-line-height-lg);
+    color: var(--color-purple-4);
 }
 
 .breadcrumbs :global(.mantine-Breadcrumbs-separator) {
