@@ -4,7 +4,7 @@ import { Genre, Movie } from '../../../types/types';
 import CardPoster from '../parts/cardPoster/CardPoster';
 import CardDescription from '../parts/cardDescription/CardDescription';
 import { CardInfoList } from '../parts/cardInfoList/CardInfoList';
-import { getGenresStrById } from '../../../utils/getGenres';
+import { getGenresNamesByIds } from '../../../utils/getGenres';
 import { useState } from 'react';
 
 interface IMovieCardLink {
@@ -13,7 +13,7 @@ interface IMovieCardLink {
 }
 
 export default function MovieCardLink({ movie, genres }: IMovieCardLink) {
-  const [ genresStr ] = useState<string>(movie.genre_ids ? getGenresStrById(movie.genre_ids, genres) : '');
+  const [ genresStr ] = useState<string>(movie.genre_ids ? getGenresNamesByIds(movie.genre_ids, genres).join(', ') : '');
   const handleVoteBtnClick = () => {};
 
   return (

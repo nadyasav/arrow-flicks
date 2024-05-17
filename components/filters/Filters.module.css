@@ -10,12 +10,14 @@
 }
 .sort {
     align-self: flex-end;
-}
-.genres, .sort {
     max-width: 284px;
     width: 100%;
 }
+.filtersItem {
+    width: 33.333%;
+}
 .ratings {
+    width: 33.333%;
     display: flex;
     align-items: flex-end;
     gap: 0 8px;
@@ -23,11 +25,13 @@
 .resetBtn {
     margin-left: auto;
     height: 42px;
+    padding: 0;
     font-weight: 500;
     font-size: 14px;
     line-height: 143%;
     color: var(--color-purple-4);
     background-color: transparent;
+    flex-shrink: 0;
 
     &:hover {
         color: var(--color-purple-3);

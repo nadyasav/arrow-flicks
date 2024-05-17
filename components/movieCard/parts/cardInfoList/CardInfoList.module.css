@@ -15,5 +15,9 @@
 }
 
 .lg .key{
-    width: 140px;
+    min-width: 140px;
+}
+
+.value {
+    word-break: break-word;
 }

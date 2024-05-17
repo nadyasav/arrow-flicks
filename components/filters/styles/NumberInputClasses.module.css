@@ -1,0 +1,13 @@
+.controls {
+    height: 26px;
+    margin-right: 8px;
+}
+
+.control {
+    border: none;
+    color: var(--color-grey-3);
+}
+
+.control:hover {
+    background: transparent;
+}

@@ -3,36 +3,27 @@ import { GenresList } from '../../types/types';
 import { Button, MultiSelect, NumberInput, Select } from '@mantine/core';
 import styles from './Filters.module.css';
 import { useAppDispatch, useAppSelector } from '../../store/redux-hooks';
-import { resetFilters, setGenres, setSortBy, setVoteAverageGte, setVoteAverageLte } from '../../store/filtersSlice';
-import { getGenresIdsByNames, getGenresNamesArr } from '../../utils/getGenres';
+import { resetFilters, setGenres, setReleaseYear, setSortBy, setVoteAverageGte, setVoteAverageLte } from '../../store/filtersSlice';
+import { getGenresIdsByNames, getGenresNamesArr, getGenresNamesByIds } from '../../utils/getGenres';
 
 import MultiSelectClasses from './styles/MultiSelectClasses.module.css';
-import { IconChevronUp } from '@tabler/icons-react';
+import SelectClasses from './styles/SelectClasses.module.css';
+import NumberInputClasses from './styles/NumberInputClasses.module.css';
 
-const SortByValues = [
-  'original_title.asc',
-  'original_title.desc',
-  'popularity.asc',
-  'popularity.desc',
-  'revenue.asc',
-  'revenue.desc',
-  'primary_release_date.asc',
-  'title.desc',
-  'primary_release_date.desc',
-  'vote_average.asc',
-  'vote_average.desc',
-  'vote_count.asc',
-  'vote_count.desc'
-]
+import { IconChevronUp } from '@tabler/icons-react';
+import { SORT_BY_DEFAULT, SortByData } from '../../constants/constants';
+import { GetYearsArr } from '../../utils/getYearsArr';
 
 function Filters(props: {genres: GenresList}) {
   const dispatch = useAppDispatch();
   const { withGenres, primaryReleaseYear, voteAverageLte, voteAverageGte, sortBy } = useAppSelector((state) => state.filters);
   const [formkey, setFormkey] = useState(Date.now());
-  const [genresSelected, setGenresSelected] = useState<Array<string>>([]);
+  const [genresSelected, setGenresSelected] = useState<Array<string> | undefined>(
+    withGenres?.length ? getGenresNamesByIds(withGenres, props.genres) : undefined);
+  const [ yearsData ] = useState(GetYearsArr(1882));
 
   const isFiltersEmpty = () => {
-    return !withGenres?.length && !primaryReleaseYear && !voteAverageLte && !voteAverageGte;
+    return !withGenres?.length && !primaryReleaseYear && !voteAverageLte && !voteAverageGte && sortBy === SORT_BY_DEFAULT;
   }
 
   const handleSelectGenresChange = (values: string[]) => {
@@ -64,7 +55,15 @@ function Filters(props: {genres: GenresList}) {
   }
 
   const handleSortByChange = (value: string | null) => {
-    dispatch(setSortBy(value));
+    let sortByDataItem;
+    if(value) {
+      sortByDataItem = Object.values(SortByData).find((item) => item.value === value);
+    }
+    dispatch(setSortBy(sortByDataItem?.key || SORT_BY_DEFAULT));
+  };
+
+  const handleYearChange = (value: string | null) => {
+    dispatch(setReleaseYear(value ? Number(value) : undefined));
   };
 
   const handleResetBtnClick = useCallback(() => {
@@ -76,7 +75,7 @@ function Filters(props: {genres: GenresList}) {
   return (
     <form className={styles.filters} key={formkey}>
       <div className={styles.filtersTop}>
-        <div className={styles.genres}>
+        <div className={styles.filtersItem}>
           <MultiSelect
               label="Genres"
               placeholder="Select genre"
@@ -84,9 +83,21 @@ function Filters(props: {genres: GenresList}) {
               onChange={handleSelectGenresChange}
               value={genresSelected}
               withCheckIcon={false}
-              classNames={{...MultiSelectClasses}}
+              classNames={MultiSelectClasses}
               rightSection={<IconChevronUp />}
               />
+        </div>
+        <div className={styles.filtersItem}>
+          <Select
+            label='Release year'
+            placeholder='Select release year'
+            onChange={handleYearChange}
+            data={yearsData}
+            defaultValue={primaryReleaseYear ? primaryReleaseYear.toString() : undefined}
+            withCheckIcon={false}
+            classNames={SelectClasses}
+            rightSection={<IconChevronUp />}
+          />
         </div>
         <div className={styles.ratings}>
           <div>
@@ -95,6 +106,7 @@ function Filters(props: {genres: GenresList}) {
               placeholder='From'
               onBlur={handleRatingGteBlur}
               defaultValue={voteAverageGte}
+              classNames={NumberInputClasses}
               min={0}
               max={10}
             />
@@ -104,6 +116,7 @@ function Filters(props: {genres: GenresList}) {
               placeholder='To'
               onBlur={handleRatingLteBlur}
               defaultValue={voteAverageLte}
+              classNames={NumberInputClasses}
               min={0}
               max={10}
             />
@@ -116,15 +129,18 @@ function Filters(props: {genres: GenresList}) {
           onClick={handleResetBtnClick}
           >Reset filters</Button>
       </div>
-        <div className={styles.sort}>
-          <Select
-            label='Sort by'
-            placeholder='Select sort type'
-            onChange={handleSortByChange}
-            data={SortByValues}
-            defaultValue={sortBy}
-          />
-        </div>
+      <div className={styles.sort}>
+        <Select
+          label='Sort by'
+          placeholder='Select sort type'
+          onChange={handleSortByChange}
+          data={Object.values(SortByData).map((item) => item.value)}
+          value={sortBy ? SortByData[sortBy].value : undefined}
+          withCheckIcon={false}
+          classNames={SelectClasses}
+          rightSection={<IconChevronUp />}
+        />
+      </div>
     </form>
   );
 };

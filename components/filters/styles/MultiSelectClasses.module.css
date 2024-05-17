@@ -54,6 +54,7 @@
 
         & + input{
             height: 0;
+            position: absolute;
 
             &::placeholder {
                 color: transparent;
@@ -83,9 +84,13 @@
     }
 }
 
+.input[data-expanded="true"] {
+    border-color: var(--color-purple-4);
+}
+
 .input + .section{
     svg {
-        transform: rotate(0deg);
+        transform: rotate(180deg);
         transition: transform 0.1s;
         color: var(--color-grey-3);
         width: 20px;
@@ -94,7 +99,7 @@
 
 .input[data-expanded="true"] + .section {
     svg {
-        transform: rotate(180deg);
+        transform: rotate(0deg);
         transition: transform 0.1s;
         color: var(--color-purple-4);
     }

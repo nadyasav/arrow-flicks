@@ -21,7 +21,7 @@ export default function IndexPage() {
   const updateMovies = useCallback(() => {
     const searchParams = {
       primary_release_year: primaryReleaseYear,
-      with_genres: !!withGenres?.length ? withGenres : undefined,
+      with_genres: !!withGenres?.length ? withGenres.join() : undefined,
       "vote_average.lte": voteAverageLte,
       "vote_average.gte": voteAverageGte,
       sort_by: sortBy
@@ -38,10 +38,10 @@ export default function IndexPage() {
     <div className={styles.movies}>
       <h1 className={styles.title}>Movies</h1>
       <div className={styles.movieFilters}>
-        { genresList && <Filters genres={genresList}/> }
+        { !!genresList.length && <Filters genres={genresList}/> }
       </div>
       <div className={styles.movieCards}>
-        { movies && genresList && movies.map((item) =>
+        { !!movies.length && !!genresList.length && movies.map((item) =>
           <div key={item.id} className={styles.movieCardsItem}>
             <MovieCardLink movie={item} genres={genresList} />
           </div>)}

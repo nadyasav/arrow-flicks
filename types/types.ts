@@ -33,7 +33,7 @@ export type Language = 'en-US';
 
 export interface MoviesSearchParams {
     language?: Language;
-    with_genres?: Array<string>;
+    with_genres?: string;
     primary_release_year?: number;
     "vote_average.lte"?: number;
     "vote_average.gte"?: number;

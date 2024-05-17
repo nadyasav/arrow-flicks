@@ -1,7 +1,7 @@
 import { Genre, GenresList } from "../types/types";
 
-export function getGenresStrById(ids: Array<number>, genres: Array<Genre>): string {
-    let resultStr = '';
+export function getGenresNamesByIds(ids: Array<number | string>, genres: Array<Genre>): Array<string> {
+    const resultArr = [];
     for(let i = 0; i < ids.length; i++){
         const genre = genres.find((item) => item.id == ids[i]);
 
@@ -9,13 +9,9 @@ export function getGenresStrById(ids: Array<number>, genres: Array<Genre>): stri
             continue;
         }
 
-        if(resultStr) {
-            resultStr += `, ${genre.name}`;
-        } else {
-            resultStr = genre.name;
-        }
+        resultArr.push(genre.name);
     }
-    return resultStr;
+    return resultArr;
 }
 
 export function getGenresStr(genres: Array<Genre>): string {
@@ -40,7 +36,7 @@ export const getGenresIdsByNames = (names: Array<string>, genres: GenresList) =>
         const genre = genres.find((item) => item.name == names[i]);
 
         if(genre !== undefined) {
-            genresIds.push(genre.id.toString());
+            genresIds.push(genre.id);
         } else {
             continue;
         }
