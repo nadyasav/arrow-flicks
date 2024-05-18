@@ -5,11 +5,13 @@ import { fetchMovies } from '../../store/moviesSlice';
 import MovieCardLink from '../../components/movieCard/movieCardLink/MovieCardLink';
 import { fetchGenresList } from '../../store/genresListSlice';
 import Filters from '../../components/filters/Filters';
+import { getRatignById } from '../../utils/getRatingById';
 
 export default function IndexPage() {
   const dispatch = useAppDispatch();
   const { movies } = useAppSelector((state) => state.movies);
   const { genresList } = useAppSelector((state) => state.genresList);
+  const { ratedIds } = useAppSelector((state) => state.rated);
   const { withGenres, primaryReleaseYear, voteAverageLte, voteAverageGte, sortBy } = useAppSelector((state) => state.filters);
 
   useEffect(() => {
@@ -43,7 +45,7 @@ export default function IndexPage() {
       <div className={styles.movieCards}>
         { !!movies.length && !!genresList.length && movies.map((item) =>
           <div key={item.id} className={styles.movieCardsItem}>
-            <MovieCardLink movie={item} genres={genresList} />
+            <MovieCardLink movie={item} genres={genresList} rating={getRatignById(item.id, ratedIds)} genresIds={item.genre_ids} />
           </div>)}
       </div>
     </div>

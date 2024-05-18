@@ -64,3 +64,5 @@ export const SortByData = {
       value: 'voteCountDesc'
     }
 }
+
+export const COUNT_RATED_ON_PAGE = 4;

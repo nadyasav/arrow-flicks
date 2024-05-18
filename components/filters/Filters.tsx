@@ -20,7 +20,7 @@ function Filters(props: {genres: GenresList}) {
   const [formkey, setFormkey] = useState(Date.now());
   const [genresSelected, setGenresSelected] = useState<Array<string> | undefined>(
     withGenres?.length ? getGenresNamesByIds(withGenres, props.genres) : undefined);
-  const [ yearsData ] = useState(GetYearsArr(1882));
+  const [ yearsData ] = useState(GetYearsArr(1874));
 
   const isFiltersEmpty = () => {
     return !withGenres?.length && !primaryReleaseYear && !voteAverageLte && !voteAverageGte && sortBy === SORT_BY_DEFAULT;

@@ -123,3 +123,9 @@ export interface CardInfoListData {
     key: string;
     value: string;
 }
+
+export interface RatedId {
+    id: number;
+    rating: number;
+    title: string;
+}

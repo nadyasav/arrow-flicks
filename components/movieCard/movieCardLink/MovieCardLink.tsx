@@ -1,25 +1,51 @@
 import Link from 'next/link';
 import styles from './MovieCardLink.module.css';
-import { Genre, Movie } from '../../../types/types';
+import { Genre, Movie, MovieSingle } from '../../../types/types';
 import CardPoster from '../parts/cardPoster/CardPoster';
 import CardDescription from '../parts/cardDescription/CardDescription';
 import { CardInfoList } from '../parts/cardInfoList/CardInfoList';
-import { getGenresNamesByIds } from '../../../utils/getGenres';
 import { useState } from 'react';
+import { useAppDispatch } from '../../../store/redux-hooks';
+import { addRated, removeRatedById } from '../../../store/ratedSlice';
+import { getGenresNamesByIds, getGenresStr } from '../../../utils/getGenres';
 
 interface IMovieCardLink {
-  movie: Movie;
+  movie: Movie | MovieSingle;
+  rating: number;
   genres: Array<Genre>;
+  genresIds?: Array<number>;
 }
 
-export default function MovieCardLink({ movie, genres }: IMovieCardLink) {
-  const [ genresStr ] = useState<string>(movie.genre_ids ? getGenresNamesByIds(movie.genre_ids, genres).join(', ') : '');
-  const handleVoteBtnClick = () => {};
+export default function MovieCardLink({ movie, rating, genres, genresIds }: IMovieCardLink) {
+  const dispatch = useAppDispatch();
+  const [ genresStr ] = useState<string>(getGenresData());
+  const [ vote, setVote ] = useState<number>(rating);
+
+  function getGenresData() {
+    if(!genresIds?.length) {
+      return getGenresStr(genres);
+    } else {
+      return genresIds ? getGenresNamesByIds(genresIds, genres).join(', ') : '';
+    }
+  }
+
+  const handleVoteBtnClick = () => {
+    if (!rating) {
+      //call popup
+      dispatch(addRated({
+        id: movie.id,
+        rating: 8,
+        title: movie.original_title
+      }));
+    } else {
+      dispatch(removeRatedById(movie.id));
+    }
+  };
 
   return (
     <Link href={`/movies/${movie.id}`} className={styles.card}>
       <CardPoster src={movie.poster_path} alt={movie.original_title}/>
-      <CardDescription movie={movie} voteBtnOnClick={handleVoteBtnClick}>
+      <CardDescription movie={movie} voteBtnOnClick={handleVoteBtnClick} rating={rating}>
         {genresStr &&
           <CardInfoList data={[{ key: 'Genres', value: genresStr }]}/>}
       </CardDescription>

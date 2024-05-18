@@ -25,18 +25,7 @@ export const fetchMovies = createAsyncThunk<MoviesRes, MoviesSearchParams | unde
           return rejectWithValue('failed to fetch data');
         }
       });
-    },
-    /*{
-      //timeout: 5000,
-      condition: (args, { getState }) => {
-      console.log(args)
-      const { movies } = getState() as { movies: IMoviesSlice };
-      if (movies.moviesStatus === RequesStatus.PENDING) {
-        return false;
-      }
-      return true;
-      },
-    }*/
+    }
 );
 
 const moviesSlice = createSlice({
@@ -47,7 +36,6 @@ const moviesSlice = createSlice({
     builder.addCase(fetchMovies.fulfilled, (state, action) => {
         state.moviesStatus = RequesStatus.FULFILLED;
         state.movies = action.payload.results;
-        console.log(action.payload.results)
     });
     builder.addCase(fetchMovies.pending, (state) => {
         state.moviesStatus = RequesStatus.PENDING;

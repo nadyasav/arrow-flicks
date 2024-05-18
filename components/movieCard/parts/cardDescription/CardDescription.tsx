@@ -7,9 +7,10 @@ interface ICardDescription {
   movie: Omit<IMovie, "id" | "poster_path" | "genre_ids">;
   children?: React.ReactNode;
   voteBtnOnClick: () => void
+  rating: number;
 }
 
-export default function CardDescription({ movie, children, voteBtnOnClick }: ICardDescription) {
+export default function CardDescription({ movie, children, voteBtnOnClick, rating }: ICardDescription) {
   const votes = {
     average: movie.vote_average,
     count: movie.vote_count
@@ -24,7 +25,7 @@ export default function CardDescription({ movie, children, voteBtnOnClick }: ICa
           <RatingInfo {...votes}/>
         </div>
         <div className={styles.voteBtn}>
-          <VoteBtn onClick={voteBtnOnClick} rating={0}/>
+          <VoteBtn onClick={voteBtnOnClick} rating={rating}/>
         </div>
       </div>
       { children &&

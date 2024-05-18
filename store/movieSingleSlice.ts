@@ -49,7 +49,6 @@ const movieSingleSlice = createSlice({
     builder.addCase(fetchMovie.fulfilled, (state, action) => {
         state.movieStatus = RequesStatus.FULFILLED;
         state.movie = action.payload;
-        console.log('movie/fetchMovie: ', action.payload);
     });
     builder.addCase(fetchMovie.pending, (state) => {
         state.movieStatus = RequesStatus.PENDING;

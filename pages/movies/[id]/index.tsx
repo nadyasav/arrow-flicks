@@ -6,14 +6,16 @@ import MovieCardDetailed from "../../../components/movieCard/movieCardDetailed/M
 import styles from './index.module.css';
 import { MovieSingle } from "../../../types/types";
 import MovieDetails from "../../../components/movieDetails/MovieDetails";
-import { Anchor, Breadcrumbs } from "@mantine/core";
+import { Breadcrumbs } from "@mantine/core";
 import Link from "next/link";
+import { getRatignById } from "../../../utils/getRatingById";
 
 export default function Movie() {
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useAppDispatch();
   const { movie } = useAppSelector((state) => state.movie);
+  const { ratedIds } = useAppSelector((state) => state.rated);
 
   const breadcrumbsItems = [
     { title: 'Movies', href: '/movies' },
@@ -42,7 +44,7 @@ export default function Movie() {
       <Breadcrumbs className={styles.breadcrumbs}>{breadcrumbsItems}</Breadcrumbs>
       {movie && 
         <>
-          <MovieCardDetailed movie={movie} />
+          <MovieCardDetailed movie={movie} rating={getRatignById(movie.id, ratedIds)}/>
 
           {hasAnyMovieDetails(movie) && 
             <MovieDetails videos={movie.videos?.results || []} 

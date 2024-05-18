@@ -5,7 +5,7 @@ import { IconStarFilled } from '@tabler/icons-react';
 
 interface IVoteBtn {
     onClick: () => void;
-    rating?: number;
+    rating: number;
 }
 
 export const VoteBtn = (props: IVoteBtn) => {

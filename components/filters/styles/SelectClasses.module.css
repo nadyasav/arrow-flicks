@@ -1,6 +1,10 @@
 .dropdown {
     padding: 4px;
     min-height: 224px;
+
+    & .mantine-ScrollArea-scrollbar{
+        width: 30px;
+    }
 }
 
 .option {

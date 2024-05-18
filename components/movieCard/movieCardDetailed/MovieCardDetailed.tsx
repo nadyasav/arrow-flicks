@@ -8,9 +8,12 @@ import { convertMinsToHourAndMins } from '../../../utils/convertMinsToHourAndMin
 import { formatDate } from '../../../utils/formatDate';
 import { getFormatedNumber } from '../../../utils/getFormatedNumber';
 import { getGenresStr } from '../../../utils/getGenres';
+import { addRated, removeRatedById } from '../../../store/ratedSlice';
+import { useAppDispatch } from '../../../store/redux-hooks';
 
 interface IMovieCardDetailed {
   movie: MovieSingle;
+  rating: number;
 }
 
 function getCardInfoData(movie: MovieSingle) {
@@ -25,15 +28,27 @@ function getCardInfoData(movie: MovieSingle) {
   return data.filter((item) => !!item.value);
 }
 
-export default function MovieCardDetailed({ movie }: IMovieCardDetailed) {
+export default function MovieCardDetailed({ movie, rating }: IMovieCardDetailed) {
+  const dispatch = useAppDispatch();
   const [cardInfo] = useState<Array<CardInfoListData>>(getCardInfoData(movie));
 
-  const handleVoteBtnClick = () => {};
+  const handleVoteBtnClick = () => {
+    if (!rating) {
+      //call popup
+      dispatch(addRated({
+        id: movie.id,
+        rating: 8,
+        title: movie.original_title
+      }));
+    } else {
+      dispatch(removeRatedById(movie.id));
+    }
+  };
 
   return (
     <div className={styles.card}>
       <CardPoster src={movie.poster_path} alt={movie.original_title} size='lg'/>
-      <CardDescription movie={movie} voteBtnOnClick={handleVoteBtnClick}>
+      <CardDescription movie={movie} voteBtnOnClick={handleVoteBtnClick} rating={rating}>
         {!!cardInfo.length &&
             <CardInfoList 
               size='lg'
