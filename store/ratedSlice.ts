@@ -42,7 +42,8 @@ export const fetchRatedMovies = createAsyncThunk<IFetchRatedResData, FetchRatedP
     const { rated } = getState() as { rated: IRatedSlice };
     const res = await RatedMoviesRequest([...rated.ratedIds], {...data});
     return res.status === RequesStatus.REJECTED ? rejectWithValue('failed to fetch data') : res.data;
-});
+  }
+);
 
 const ratedSlice = createSlice({
   name: 'rated',

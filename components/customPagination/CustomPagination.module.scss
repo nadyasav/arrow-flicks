@@ -1,0 +1,20 @@
+.dots {
+    display: none;
+}
+.control {
+    border: 1px solid var(--color-grey-2);
+
+    &:where([data-active]){
+        border: none;
+    }
+
+    &:where(:disabled, [data-disabled]) {
+        color: var(--color-grey-2);
+        opacity: 1;
+    }
+
+    &:last-child {
+        border-color: var(--color-grey-1);
+        color: var(--color-grey-4);
+    }
+}

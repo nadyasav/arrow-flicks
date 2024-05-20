@@ -66,3 +66,5 @@ export const SortByData = {
 }
 
 export const COUNT_RATED_ON_PAGE = 4;
+export const MAX_TOTAL_PAGES = 500;
+export const MOVIES_ON_PAGE = 10;

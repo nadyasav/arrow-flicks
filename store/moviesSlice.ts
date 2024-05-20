@@ -1,15 +1,20 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { MoviesSearchParams, Movie, RequesStatus, MoviesRes } from '../types/types';
 import axios from 'axios';
+import { getTotalPages } from '../utils/getTotalPages';
 
 interface IMoviesSlice {
   movies: Array<Movie>;
   moviesStatus: RequesStatus | '';
+  page: number;
+  totalPages: number;
 }
 
 const initialState: IMoviesSlice = {
   movies: [],
   moviesStatus: '',
+  page: 1,
+  totalPages: 1,
 };
 
 export const fetchMovies = createAsyncThunk<MoviesRes, MoviesSearchParams | undefined, { rejectValue: string }>(
@@ -31,11 +36,18 @@ export const fetchMovies = createAsyncThunk<MoviesRes, MoviesSearchParams | unde
 const moviesSlice = createSlice({
   name: 'movies',
   initialState,
-  reducers: {},
+  reducers: {
+    setPage: (state, action) => {
+      state.page = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchMovies.fulfilled, (state, action) => {
         state.moviesStatus = RequesStatus.FULFILLED;
         state.movies = action.payload.results;
+        state.page = action.payload.page;
+        const total = action.payload.total_pages;
+        state.totalPages = getTotalPages(total);
     });
     builder.addCase(fetchMovies.pending, (state) => {
         state.moviesStatus = RequesStatus.PENDING;
@@ -47,4 +59,5 @@ const moviesSlice = createSlice({
   },
 });
 
+export const { setPage } = moviesSlice.actions;
 export default moviesSlice;

@@ -2,14 +2,15 @@ import styles from './index.module.scss';
 import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from '../../store/redux-hooks';
 import { fetchRatedMovies, setPage } from '../../store/ratedSlice';
-import { Pagination } from '@mantine/core';
 import MovieCardLink from '../../components/movieCard/movieCardLink/MovieCardLink';
 import { getRatignById } from '../../utils/getRatingById';
 import { SearchField } from '../../components/searchField/SearchField';
+import CustomPagination from '../../components/customPagination/CustomPagination';
+import { RequesStatus } from '../../types/types';
 
 export default function IndexPage() {
   const dispatch = useAppDispatch();
-  const { ratedIds, ratedMovies } = useAppSelector((state) => state.rated);
+  const { ratedIds, ratedMovies, ratedStatus } = useAppSelector((state) => state.rated);
   const [searchValue, setSearchValue] = useState('');
 
   useEffect(
@@ -51,10 +52,11 @@ export default function IndexPage() {
       </div>
       { !!ratedMovies.movies.length && 
         <div className={styles.pagination}>
-          <Pagination
+          <CustomPagination
             value={ratedMovies.page}
             onChange={handlePageOnChange}
             total={ratedMovies.totalPages}
+            disabled={ratedStatus === RequesStatus.PENDING}
           />
         </div>}
     </div>

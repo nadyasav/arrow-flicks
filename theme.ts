@@ -62,6 +62,7 @@ export const resolver: CSSVariablesResolver = (theme) => ({
 
     '--mantine-primary-color-filled': theme.other.colors.purple[4],
     '--mantine-primary-color-filled-hover': theme.other.colors.purple[3],
+    '--pagination-control-radius': theme.radius.xs,
   },
   light: {},
   dark: {},
