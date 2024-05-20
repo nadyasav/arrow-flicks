@@ -1,0 +1,12 @@
+.root {
+    font-size: var(--mantine-font-size-sm);
+    font-weight: var(--font-weight-lg);
+    line-height: var(--mantine-line-height-md);
+    color: var(--color-white);
+    transition: background-color 0.1s;
+
+    &:active {
+        background-color: var(--color-purple-5);
+        transition: background-color 0.1s;
+    }
+}

@@ -2,21 +2,33 @@
     margin: 0 auto;
     max-width: 980px;
     width: 100%;
+}
+
+.moviesTop {
     display: flex;
-    flex-direction: column;
-    gap: 24px 0;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
 }
 
 .movieCards {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
+    min-height: 452px;
 
     &Item {
         width: calc(50% - 8px);
     }
 }
 
-.title {
-    margin-bottom: 16px;
+.searchField {
+    max-width: 490px;
+    width: 100%;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
 }

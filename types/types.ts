@@ -129,3 +129,14 @@ export interface RatedId {
     rating: number;
     title: string;
 }
+
+export interface IFetchRatedResData {
+    movies: Array<MovieSingle>;
+    page: number;
+    totalPages: number;
+}
+
+export interface FetchRatedParams{
+    page: number;
+    searchValue: string;
+}

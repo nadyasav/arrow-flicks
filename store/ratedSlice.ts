@@ -1,21 +1,23 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RequesStatus, MovieSingle, RatedId } from '../types/types';
+import { RequesStatus, MovieSingle, RatedId, IFetchRatedResData, FetchRatedParams } from '../types/types';
 import axios from 'axios';
-import { getRatedIdsOnPage } from '../utils/getRatedIdsOnPage';
 import { getLocalStorage } from '../utils/getLocalStorage';
+import { RatedMoviesRequest } from '../services/ratedMovies';
 
 interface IRatedSlice {
-  ratedIds: Array<RatedId>
-  ratedMovies: Array<MovieSingle>;
+  ratedIds: Array<RatedId>;
   ratedStatus: RequesStatus | '';
-  page: number;
+  ratedMovies: IFetchRatedResData;
 }
 
 const initialState: IRatedSlice = {
   ratedIds: typeof window === "undefined" ? [] : getLocalStorage('ratedMovies'),
-  ratedMovies: [],
   ratedStatus: '',
-  page: 1
+  ratedMovies: {
+    movies: [],
+    page: 1,
+    totalPages: 1
+  }
 };
 
 export const fetchRatedMovie = createAsyncThunk<MovieSingle, string, { rejectValue: string }>(
@@ -34,32 +36,23 @@ export const fetchRatedMovie = createAsyncThunk<MovieSingle, string, { rejectVal
     }
 );
 
-export const fetchRatedMovies = createAsyncThunk<Array<MovieSingle>, number>(
+export const fetchRatedMovies = createAsyncThunk<IFetchRatedResData, FetchRatedParams, { rejectValue: string }>(
   'rated/fetchRatedMovies',
-  async (page, { dispatch, getState, rejectWithValue }) => {
-    const promices: Array<any> = [];
+  async (data, { getState, rejectWithValue }) => {
     const { rated } = getState() as { rated: IRatedSlice };
-    const ratedPart = getRatedIdsOnPage(page, rated.ratedIds);
-
-    ratedPart.forEach((item) => promices.push(dispatch(fetchRatedMovie(item.id.toString()))));
-    const actions = await Promise.all(promices);
-    const rejectedReq = actions.filter((item) => item.meta.requestStatus === 'rejected');
-    if(rejectedReq.length > 0) {
-      //if(rejectedReq.payload.statusCode == 34){}
-      return rejectWithValue('failed to fetch data');
-    }
-    return actions.map((item) => item.payload);
-  });
+    const res = await RatedMoviesRequest([...rated.ratedIds], {...data});
+    return res.status === RequesStatus.REJECTED ? rejectWithValue('failed to fetch data') : res.data;
+});
 
 const ratedSlice = createSlice({
   name: 'rated',
   initialState,
   reducers: {
-    resetRated: (state) => {
-      state.ratedMovies = [];
+    resetRatedMovies: (state) => {
+      state.ratedMovies.movies = [];
     },
     setPage: (state, action) => {
-      state.page = action.payload;
+      state.ratedMovies.page = action.payload;
     },
     addRated: (state, action) => {
       state.ratedIds.push(action.payload);
@@ -89,5 +82,5 @@ const ratedSlice = createSlice({
   },
 });
 
-export const { resetRated, setPage, addRated, removeRatedById } = ratedSlice.actions;
+export const { resetRatedMovies, setPage, addRated, removeRatedById } = ratedSlice.actions;
 export default ratedSlice;

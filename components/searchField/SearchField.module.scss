@@ -1,0 +1,76 @@
+.searchInputBox {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 35px;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-grey-1);
+  border-radius: var(--mantine-radius-sm);
+  height: 48px;
+  position: relative;
+  transition: border-color 0.1s;
+
+  &::before {
+    content: url('../../public/img/Search.svg');
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    height: 16px;
+    transform: translateY(-50%);
+  }
+
+  &:focus-within,
+  &:hover {
+    border-color: var(--color-purple-4);
+  }
+
+  &:hover {
+    transition: border-color 0.2s;
+  }
+}
+.searchInput {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  font-size: var(--mantine-font-size-sm);
+  font-weight: var(--font-weight-sm);
+  line-height: var(--mantine-line-height-lg);
+  caret-color: var(--color-purple-4);
+  color: var(--color-black);
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: var(--color-grey-3);
+    font-size: var(--mantine-font-size-sm);
+    font-weight: var(--font-weight-sm);
+    line-height: var(--mantine-line-height-lg);
+  }
+
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+}
+.searchBtnBox {
+  padding: 8px 12px;
+}
+.searchBtn {
+  height: 32px;
+}
+
+@media only screen and (max-width: 420px) {
+  .searchInputBox {
+    padding-left: 26px;
+
+    &::before {
+      left: 5px;
+    }
+  }
+  .searchBtnBox {
+    padding: 5px;
+  }
+}

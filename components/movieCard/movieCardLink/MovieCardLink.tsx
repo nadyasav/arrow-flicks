@@ -22,10 +22,10 @@ export default function MovieCardLink({ movie, rating, genres, genresIds }: IMov
   const [ vote, setVote ] = useState<number>(rating);
 
   function getGenresData() {
-    if(!genresIds?.length) {
-      return getGenresStr(genres);
+    if(genresIds !== undefined) {
+      return genresIds.length ? getGenresNamesByIds(genresIds, genres).join(', ') : '';
     } else {
-      return genresIds ? getGenresNamesByIds(genresIds, genres).join(', ') : '';
+      return genres.length ? getGenresStr(genres) : '';
     }
   }
 
