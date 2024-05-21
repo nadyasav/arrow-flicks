@@ -47,10 +47,14 @@ export default function IndexPage() {
       <div className={styles.movieCards}>
         { !!ratedMovies.movies.length && ratedMovies.movies.map((item) =>
           <div key={item.id} className={styles.movieCardsItem}>
-            <MovieCardLink movie={item} rating={getRatignById(item.id, ratedIds)} genres={item.genres} />
+            <MovieCardLink
+              movie={item}
+              rating={getRatignById(item.id, ratedIds)}
+              genres={item.genres}
+              searchValue={searchValue} />
           </div>)}
       </div>
-      { !!ratedMovies.movies.length && 
+      { !!ratedMovies.movies.length &&
         <div className={styles.pagination}>
           <CustomPagination
             value={ratedMovies.page}

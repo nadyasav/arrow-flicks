@@ -18,9 +18,11 @@ interface IMovieCardLink {
   rating: number;
   genres: Array<Genre>;
   genresIds?: Array<number>;
+  searchValue?: string;
 }
 
-export default function MovieCardLink({ movie, rating, genres, genresIds }: IMovieCardLink) {
+export default function MovieCardLink(props: IMovieCardLink) {
+  const { movie, rating, genres, genresIds, searchValue } = props;
   const dispatch = useAppDispatch();
   const [ genresStr ] = useState<string>(getGenresData());
   const [opened, { open, close }] = useDisclosure(false);
@@ -49,9 +51,9 @@ export default function MovieCardLink({ movie, rating, genres, genresIds }: IMov
     <>
       <Link href={`/movies/${movie.id}`} className={styles.card}>
         <CardPoster src={movie.poster_path} alt={movie.original_title || ''} />
-        <CardDescription movie={movie} voteBtnOnClick={open} rating={rating}>
+        <CardDescription movie={movie} voteBtnOnClick={open} rating={rating} searchValue={searchValue} size='sm'>
           {genresStr &&
-            <CardInfoList data={[{ key: 'Genres', value: genresStr }]} />}
+            <CardInfoList data={[{ key: 'Genres', value: genresStr }]} size='sm' />}
         </CardDescription>
       </Link>
       <Modal opened={opened} onClose={close} title="Rating" centered

@@ -2,6 +2,10 @@
     width: 100%;
 }
 
+.title {
+    word-break: break-all;
+}
+
 .description, .descriptionTop {
     display: flex;
     flex-direction: column;

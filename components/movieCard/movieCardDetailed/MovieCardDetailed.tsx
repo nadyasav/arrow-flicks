@@ -49,6 +49,7 @@ export default function MovieCardDetailed({ movie, rating }: IMovieCardDetailed)
     }
   }, [dispatch, movie.id, movie.original_title]);
 
+
   return (
     <>
       <div className={styles.card}>

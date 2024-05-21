@@ -52,7 +52,7 @@ export default function IndexPage() {
       <div className={styles.movieCards}>
         { !!movies.length && !!genresList.length && movies.map((item) =>
           <div key={item.id} className={styles.movieCardsItem}>
-            <MovieCardLink movie={item} genres={genresList} rating={getRatignById(item.id, ratedIds)} genresIds={item.genre_ids} />
+            <MovieCardLink movie={item} genres={genresList} rating={getRatignById(item.id, ratedIds)} genresIds={item.genre_ids || []} />
           </div>)}
       </div>
       { !!movies.length && 
