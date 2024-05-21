@@ -7,3 +7,7 @@
     display: flex;
     gap: 0 16px;
 }
+.ratingModal{
+    max-width: 380px;
+    width: 100%;
+}

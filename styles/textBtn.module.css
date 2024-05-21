@@ -1,0 +1,21 @@
+.root {
+    height: 40px;
+    padding: 0;
+    font-weight: var(--font-weight-md);
+    font-size: var(--mantine-font-size-sm);
+    line-height: var(--mantine-line-height-lg);
+    color: var(--color-purple-4);
+    background-color: transparent;
+
+    &:hover:not(:disabled) {
+        background: transparent;
+        color: var(--color-purple-3);
+    }
+    &:active {
+        color: var(--color-purple-5);
+    }
+
+    &:disabled {
+        color: var(--color-grey-5);
+    }
+}

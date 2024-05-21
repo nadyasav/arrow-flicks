@@ -56,7 +56,12 @@ const ratedSlice = createSlice({
       state.ratedMovies.page = action.payload;
     },
     addRated: (state, action) => {
-      state.ratedIds.push(action.payload);
+      const index = state.ratedIds.findIndex((item) => item.id == action.payload.id);
+      if (index > -1) {
+        state.ratedIds[index].rating = action.payload.rating;
+      } else {
+        state.ratedIds.push(action.payload);
+      }
       localStorage.ratedMovies = JSON.stringify(state.ratedIds);
     },
     removeRatedById: (state, action) => {

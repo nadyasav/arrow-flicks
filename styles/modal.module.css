@@ -1,0 +1,25 @@
+.header {
+    border-bottom: 1px solid var(--color-grey-1);
+    min-height: 54px;
+}
+.title {
+    line-height: var(--mantine-line-height-md);
+    color: var(--color-black);
+}
+.body {
+    padding-top: 16px;
+}
+.close {
+    min-height: 24px;
+    height: 24px;
+    color: var(--color-grey-4);
+
+    &:hover:not([data-disabled], :disabled):hover {
+        color: var(--color-purple-3);
+        background-color: transparent;
+    }
+
+    &:active {
+        color: var(--color-purple-4);
+    }
+}

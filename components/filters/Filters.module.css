@@ -26,21 +26,5 @@
     margin-left: auto;
     height: 42px;
     padding: 0;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 143%;
-    color: var(--color-purple-4);
-    background-color: transparent;
     flex-shrink: 0;
-
-    &:hover {
-        color: var(--color-purple-3);
-    }
-    &:active {
-        color: var(--color-purple-5);
-    }
-
-    &:disabled {
-        color: var(--color-grey-5);
-    }
 }

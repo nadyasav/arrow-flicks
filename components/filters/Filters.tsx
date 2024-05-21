@@ -9,6 +9,7 @@ import { getGenresIdsByNames, getGenresNamesArr, getGenresNamesByIds } from '../
 import MultiSelectClasses from './styles/MultiSelectClasses.module.css';
 import SelectClasses from './styles/SelectClasses.module.css';
 import NumberInputClasses from './styles/NumberInputClasses.module.css';
+import textBtnClasses from '../../styles/textBtn.module.css';
 
 import { IconChevronUp } from '@tabler/icons-react';
 import { SORT_BY_DEFAULT, SortByData } from '../../constants/constants';
@@ -125,6 +126,7 @@ function Filters(props: {genres: GenresList}) {
         <Button 
           variant="transparent" 
           className={styles.resetBtn} 
+          classNames={textBtnClasses}
           disabled={isFiltersEmpty()}
           onClick={handleResetBtnClick}
           >Reset filters</Button>

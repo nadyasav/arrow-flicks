@@ -1,0 +1,27 @@
+.ratingWindow {
+    display: flex;
+    flex-direction: column;
+    gap: 16px 0;
+}
+.btnsBox {
+    display: flex;
+    gap: 0 16px;
+
+    .removeBtn {
+        font-weight: 600;
+
+        &:disabled {
+            color: var(--color-purple-4);
+        }
+    }
+}
+.ratingRoot {
+    gap: 0 5px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.ratingStarSymbol {
+    width: 29px;
+    height: 27px;
+}

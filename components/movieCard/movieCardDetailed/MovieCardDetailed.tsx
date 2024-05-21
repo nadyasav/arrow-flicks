@@ -3,13 +3,17 @@ import { CardInfoListData, MovieSingle } from '../../../types/types';
 import CardPoster from '../parts/cardPoster/CardPoster';
 import CardDescription from '../parts/cardDescription/CardDescription';
 import { CardInfoList } from '../parts/cardInfoList/CardInfoList';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { convertMinsToHourAndMins } from '../../../utils/convertMinsToHourAndMins';
 import { formatDate } from '../../../utils/formatDate';
 import { getFormatedNumber } from '../../../utils/getFormatedNumber';
 import { getGenresStr } from '../../../utils/getGenres';
 import { addRated, removeRatedById } from '../../../store/ratedSlice';
 import { useAppDispatch } from '../../../store/redux-hooks';
+import { Modal } from '@mantine/core';
+import RatingWindow from '../../ratingWindow/RatingWindow';
+import { useDisclosure } from '@mantine/hooks';
+import modalClasses from '../../../styles/modal.module.css';
 
 interface IMovieCardDetailed {
   movie: MovieSingle;
@@ -31,29 +35,38 @@ function getCardInfoData(movie: MovieSingle) {
 export default function MovieCardDetailed({ movie, rating }: IMovieCardDetailed) {
   const dispatch = useAppDispatch();
   const [cardInfo] = useState<Array<CardInfoListData>>(getCardInfoData(movie));
+  const [opened, { open, close }] = useDisclosure(false);
 
-  const handleVoteBtnClick = () => {
-    if (!rating) {
-      //call popup
+  const handleRatingSave = useCallback((value: number) => {
+    if (value) {
       dispatch(addRated({
         id: movie.id,
-        rating: 8,
-        title: movie.original_title
+        rating: value,
+        title: movie.original_title || ''
       }));
     } else {
       dispatch(removeRatedById(movie.id));
     }
-  };
+  }, [dispatch, movie.id, movie.original_title]);
 
   return (
-    <div className={styles.card}>
-      <CardPoster src={movie.poster_path} alt={movie.original_title} size='lg'/>
-      <CardDescription movie={movie} voteBtnOnClick={handleVoteBtnClick} rating={rating}>
-        {!!cardInfo.length &&
-            <CardInfoList 
+    <>
+      <div className={styles.card}>
+        <CardPoster src={movie.poster_path} alt={movie.original_title} size='lg' />
+        <CardDescription movie={movie} voteBtnOnClick={open} rating={rating}>
+          {!!cardInfo.length &&
+            <CardInfoList
               size='lg'
-              data={cardInfo}/>}
-      </CardDescription>
-    </div>
+              data={cardInfo} />}
+        </CardDescription>
+      </div>
+      <Modal opened={opened} onClose={close} title="Rating" centered
+        classNames={{
+          ...modalClasses,
+          content: styles.ratingModal
+        }} >
+        <RatingWindow title={movie.original_title} rating={rating} onSave={handleRatingSave} />
+      </Modal>
+    </>
   );
 }
