@@ -14,6 +14,9 @@ export enum MoviesSearchKeys {
     PAGE = "page"
 }
 
+export enum Language { EN = 'en-US' }
+export const RELEASE_YEAR_START = 1874;
+
 export type SortBy = 
     'original_title.asc' |
     'original_title.desc' |
@@ -29,10 +32,24 @@ export type SortBy =
     'vote_count.asc' |
     'vote_count.desc';
 
-export type Language = 'en-US';
+export enum SortByEnum {
+    'original_title.asc' = 'original_title.asc',
+    'original_title.desc' = 'original_title.desc',
+    'popularity.asc' = 'popularity.asc',
+    'popularity.desc' = 'popularity.desc',
+    'revenue.asc' = 'revenue.asc',
+    'revenue.desc' = 'revenue.desc',
+    'primary_release_date.asc' = 'primary_release_date.asc',
+    'title.desc' = 'title.desc',
+    'primary_release_date.desc' = 'primary_release_date.desc',
+    'vote_average.asc' = 'vote_average.asc',
+    'vote_average.desc' = 'vote_average.desc',
+    'vote_count.asc' = 'vote_count.asc',
+    'vote_count.desc' = 'vote_count.desc'
+}
 
 export interface MoviesSearchParams {
-    language?: Language;
+    language?: Language.EN;
     with_genres?: string;
     primary_release_year?: number;
     "vote_average.lte"?: number;

@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
-import { GenresList } from '../../types/types';
+import { GenresList, RELEASE_YEAR_START } from '../../types/types';
 import { Button, MultiSelect, NumberInput, Select } from '@mantine/core';
 import styles from './Filters.module.css';
 import { useAppDispatch, useAppSelector } from '../../store/redux-hooks';
@@ -21,7 +21,7 @@ function Filters(props: {genres: GenresList}) {
   const [formkey, setFormkey] = useState(Date.now());
   const [genresSelected, setGenresSelected] = useState<Array<string> | undefined>(
     withGenres?.length ? getGenresNamesByIds(withGenres, props.genres) : undefined);
-  const [ yearsData ] = useState(GetYearsArr(1874));
+  const [ yearsData ] = useState(GetYearsArr(RELEASE_YEAR_START));
 
   const isFiltersEmpty = () => {
     return !withGenres?.length && !primaryReleaseYear && !voteAverageLte && !voteAverageGte && sortBy === SORT_BY_DEFAULT;

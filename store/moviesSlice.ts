@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { MoviesSearchParams, Movie, RequesStatus, MoviesRes } from '../types/types';
+import { MoviesSearchParams, Movie, RequesStatus, MoviesRes, Language } from '../types/types';
 import axios from 'axios';
 import { getTotalPages } from '../utils/getTotalPages';
 
@@ -21,7 +21,7 @@ export const fetchMovies = createAsyncThunk<MoviesRes, MoviesSearchParams | unde
   'movies/fetchMovies',
   async (params, { rejectWithValue }) => {
     return await axios
-      .get<MoviesRes>('api/movies', { params: { language: 'en-US', ...params } })
+      .get<MoviesRes>('api/movies', { params: { language: Language.EN, ...params } })
       .then((res) => res.data)
       .catch((error) => {
         if (error.response) {
