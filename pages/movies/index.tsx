@@ -8,6 +8,7 @@ import Filters from '../../components/filters/Filters';
 import { getRatignById } from '../../utils/getRatingById';
 import CustomPagination from '../../components/customPagination/CustomPagination';
 import { RequesStatus } from '../../types/types';
+import { usePathname } from 'next/navigation';
 
 export default function IndexPage() {
   const dispatch = useAppDispatch();
@@ -15,6 +16,7 @@ export default function IndexPage() {
   const { genresList } = useAppSelector((state) => state.genresList);
   const { ratedIds } = useAppSelector((state) => state.rated);
   const { withGenres, primaryReleaseYear, voteAverageLte, voteAverageGte, sortBy } = useAppSelector((state) => state.filters);
+  const pathname = usePathname();
 
   useEffect(() => {
     if(!genresList.length) {
@@ -52,7 +54,12 @@ export default function IndexPage() {
       <div className={styles.movieCards}>
         { !!movies.length && !!genresList.length && movies.map((item) =>
           <div key={item.id} className={styles.movieCardsItem}>
-            <MovieCardLink movie={item} genres={genresList} rating={getRatignById(item.id, ratedIds)} genresIds={item.genre_ids || []} />
+            <MovieCardLink 
+            movie={item} 
+            genres={genresList} 
+            rating={getRatignById(item.id, ratedIds)} 
+            genresIds={item.genre_ids || []}
+            rootPath={pathname} />
           </div>)}
       </div>
       { !!movies.length && 

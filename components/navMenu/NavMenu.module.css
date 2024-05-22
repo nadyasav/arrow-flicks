@@ -1,0 +1,27 @@
+.listItem {
+  margin-top: 16px;
+  transition: color 0.1s;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  a {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+  }
+
+  &.active {
+    font-weight: 700;
+    color: var(--color-purple-4);
+    background: var(--color-purple-1);
+    border-radius: 8px;
+  }
+
+  &:hover:not(.active) {
+    color: var(--color-purple-3);
+    transition: color 0.1s;
+  }
+}

@@ -7,11 +7,13 @@ import { getRatignById } from '../../utils/getRatingById';
 import { SearchField } from '../../components/searchField/SearchField';
 import CustomPagination from '../../components/customPagination/CustomPagination';
 import { RequesStatus } from '../../types/types';
+import { usePathname } from 'next/navigation';
 
 export default function IndexPage() {
   const dispatch = useAppDispatch();
   const { ratedIds, ratedMovies, ratedStatus } = useAppSelector((state) => state.rated);
   const [searchValue, setSearchValue] = useState('');
+  const pathname = usePathname();
 
   useEffect(
     () => () => {
@@ -51,7 +53,8 @@ export default function IndexPage() {
               movie={item}
               rating={getRatignById(item.id, ratedIds)}
               genres={item.genres}
-              searchValue={searchValue} />
+              searchValue={searchValue}
+              rootPath={pathname} />
           </div>)}
       </div>
       { !!ratedMovies.movies.length &&

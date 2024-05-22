@@ -17,12 +17,13 @@ interface IMovieCardLink {
   movie: Movie | MovieSingle;
   rating: number;
   genres: Array<Genre>;
+  rootPath: string;
   genresIds?: Array<number>;
   searchValue?: string;
 }
 
 export default function MovieCardLink(props: IMovieCardLink) {
-  const { movie, rating, genres, genresIds, searchValue } = props;
+  const { movie, rating, genres, genresIds, searchValue, rootPath } = props;
   const dispatch = useAppDispatch();
   const [ genresStr ] = useState<string>(getGenresData());
   const [opened, { open, close }] = useDisclosure(false);
@@ -49,7 +50,7 @@ export default function MovieCardLink(props: IMovieCardLink) {
 
   return (
     <>
-      <Link href={`/movies/${movie.id}`} className={styles.card}>
+      <Link href={`${rootPath}/${movie.id}`} className={styles.card}>
         <CardPoster src={movie.poster_path} alt={movie.original_title || ''} />
         <CardDescription movie={movie} voteBtnOnClick={open} rating={rating} searchValue={searchValue} size='sm'>
           {genresStr &&

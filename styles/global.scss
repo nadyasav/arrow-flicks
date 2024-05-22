@@ -55,6 +55,13 @@ body {
   font-weight: var(--font-weight-sm);
 }
 
+h1 {
+  font-weight: var(--font-weight-xl);
+  font-size: var(--mantine-font-size-xl);
+  color: var(--color-black);
+  line-height: var(--mantine-line-height-md);
+}
+
 h2 {
   font-weight: var(--font-weight-lg);
   font-size: var(--mantine-font-size-lg);

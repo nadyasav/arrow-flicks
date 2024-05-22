@@ -1,0 +1,20 @@
+.movie {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px 0;
+}
+
+.breadcrumbs :global(.mantine-Breadcrumbs-breadcrumb) {
+  font-size: var(--mantine-font-size-sm);
+  line-height: var(--mantine-line-height-lg);
+  color: var(--color-purple-4);
+}
+
+.breadcrumbs :global(.mantine-Breadcrumbs-separator) {
+  font-size: 15px;
+  line-height: var(--mantine-line-height-xs);
+  color: var(--color-black);
+}

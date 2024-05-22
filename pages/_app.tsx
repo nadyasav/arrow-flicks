@@ -5,6 +5,10 @@ import { resolver, theme } from "../theme";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
 import '../styles/global.scss';
+import { Layout } from "../components/layout/Layout";
+import { Inter } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export default function App({ Component, pageProps }: any) {
   return (
@@ -17,8 +21,11 @@ export default function App({ Component, pageProps }: any) {
             content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
           />
           <link rel="shortcut icon" href="/favicon.svg" />
+          <style jsx global>{`html {font-family: ${inter.style.fontFamily};}`}</style>
         </Head>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </MantineProvider>
     </Provider>
   );
