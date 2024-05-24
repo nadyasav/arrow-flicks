@@ -1,0 +1,12 @@
+.preloaderBox {
+  position: absolute;
+  width: calc(100% - 280px);
+  height: 100%;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(245, 245, 246, 0.5);
+  z-index: 7;
+}

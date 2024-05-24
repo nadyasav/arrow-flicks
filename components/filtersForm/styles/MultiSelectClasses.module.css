@@ -19,6 +19,8 @@
 .pillsList {
     min-height: 29px;
     gap: 5px;
+    flex-wrap: nowrap;
+    overflow: hidden;
 }
 
 .inputField {
@@ -86,6 +88,10 @@
 
 .input[data-expanded="true"] {
     border-color: var(--color-purple-4);
+}
+.input {
+    height: 42px;
+    overflow: hidden;
 }
 
 .input + .section{

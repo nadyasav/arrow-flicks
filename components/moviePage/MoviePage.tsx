@@ -6,11 +6,12 @@ import { fetchMovie, resetMovie } from "../../store/movieSingleSlice";
 import { Breadcrumbs } from "@mantine/core";
 import MovieCardDetailed from "../movieCard/movieCardDetailed/MovieCardDetailed";
 import MovieDetails from "../movieDetails/MovieDetails";
-import { MovieSingle } from "../../types/types";
+import { MovieSingle, RequesStatus } from "../../types/types";
 import { getRatignById } from "../../utils/getRatingById";
 import styles from './MoviePage.module.css';
 import { usePathname } from "next/navigation";
 import { PATHS } from "../../constants/constants";
+import Preloader from "../preloader/Preloader";
 
 const getRootPath = (pathame: string) => {
   const rootPath = PATHS.find((item) => pathame?.startsWith(item.path));
@@ -24,7 +25,7 @@ export default function MoviePage() {
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useAppDispatch();
-  const { movie } = useAppSelector((state) => state.movie);
+  const { movie, movieStatus } = useAppSelector((state) => state.movie);
   const { ratedIds } = useAppSelector((state) => state.rated);
   const pathame = usePathname();
   const rootLink = getRootPath(pathame)
@@ -52,17 +53,20 @@ export default function MoviePage() {
   }, [dispatch, id]);
 
   return (
-    <div className={styles.movie}>
-      <Breadcrumbs className={styles.breadcrumbs}>{breadcrumbsItems}</Breadcrumbs>
-      {movie && 
-        <>
-          <MovieCardDetailed movie={movie} rating={getRatignById(movie.id, ratedIds)}/>
+    <>
+      <div className={styles.movie}>
+        <Breadcrumbs className={styles.breadcrumbs}>{breadcrumbsItems}</Breadcrumbs>
+        {movie && 
+          <>
+            <MovieCardDetailed movie={movie} rating={getRatignById(movie.id, ratedIds)}/>
 
-          {hasAnyMovieDetails(movie) && 
-            <MovieDetails videos={movie.videos?.results || []} 
-              overview={movie.overview} companies={movie.production_companies} />}
-        </>}
-    </div>
+            {hasAnyMovieDetails(movie) && 
+              <MovieDetails videos={movie.videos?.results || []} 
+                overview={movie.overview} companies={movie.production_companies} />}
+          </>}
+      </div>
+      {movieStatus === RequesStatus.PENDING && <Preloader />}
+    </>
   );
 }
 

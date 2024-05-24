@@ -15,6 +15,7 @@
 }
 .filtersItem {
   width: 33.333%;
+  max-width: 283px;
 }
 .ratings {
   width: 33.333%;

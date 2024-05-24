@@ -1,4 +1,6 @@
-
+.root{
+  height: 100%;
+}
 .imgBox {
   width: 100%;
   max-width: 179px;
@@ -6,4 +8,7 @@
 }
 .navMenu{
   margin-top: 80px;
+}
+.main {
+  position: relative;
 }

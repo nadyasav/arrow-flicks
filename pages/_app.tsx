@@ -7,10 +7,13 @@ import { store } from "../store/store";
 import '../styles/global.scss';
 import { Layout } from "../components/layout/Layout";
 import { Inter } from 'next/font/google'
+import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function App({ Component, pageProps }: any) {
+  const router = useRouter();
+
   return (
     <Provider store={store}>
       <MantineProvider theme={theme} cssVariablesResolver={resolver}>
@@ -23,9 +26,10 @@ export default function App({ Component, pageProps }: any) {
           <link rel="shortcut icon" href="/favicon.svg" />
           <style jsx global>{`html {font-family: ${inter.style.fontFamily};}`}</style>
         </Head>
+        {router.pathname === '/404' ? <Component {...pageProps}/> :
         <Layout>
           <Component {...pageProps} />
-        </Layout>
+        </Layout>}
       </MantineProvider>
     </Provider>
   );

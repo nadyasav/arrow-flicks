@@ -55,6 +55,16 @@ body {
   font-weight: var(--font-weight-sm);
 }
 
+main {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#__next {
+  min-height: 100vh;
+}
+
 h1 {
   font-weight: var(--font-weight-xl);
   font-size: var(--mantine-font-size-xl);

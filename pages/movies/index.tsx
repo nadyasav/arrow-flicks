@@ -9,11 +9,12 @@ import CustomPagination from '../../components/customPagination/CustomPagination
 import { RequesStatus } from '../../types/types';
 import { usePathname } from 'next/navigation';
 import FiltersForm from '../../components/filtersForm/FiltersForm';
+import Preloader from '../../components/preloader/Preloader';
 
 export default function IndexPage() {
   const dispatch = useAppDispatch();
   const { movies, page, totalPages, moviesStatus } = useAppSelector((state) => state.movies);
-  const { genresList } = useAppSelector((state) => state.genresList);
+  const { genresList, genresListStatus } = useAppSelector((state) => state.genresList);
   const { ratedIds } = useAppSelector((state) => state.rated);
   const pathname = usePathname();
   const { filters } = useAppSelector((state) => state.filters);
@@ -25,7 +26,6 @@ export default function IndexPage() {
   }, [dispatch, genresList.length]);
 
   const updateMovies = useCallback(() => {
-    console.log(filters)
     const searchParams = {
       primary_release_year: filters.primaryReleaseYear,
       with_genres: filters.withGenres?.length ? filters.withGenres.join() : undefined,
@@ -47,6 +47,7 @@ export default function IndexPage() {
   }, [dispatch]);
 
   return (
+    <>
     <div className={styles.movies}>
       <h1 className={styles.title}>Movies</h1>
       <div className={styles.movieFilters}>
@@ -73,5 +74,8 @@ export default function IndexPage() {
           />
         </div>}
     </div>
+    {(moviesStatus === RequesStatus.PENDING ||
+      genresListStatus === RequesStatus.PENDING) && <Preloader />}
+      </>
   );
 }

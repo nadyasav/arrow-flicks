@@ -8,6 +8,7 @@ import { SearchField } from '../../components/searchField/SearchField';
 import CustomPagination from '../../components/customPagination/CustomPagination';
 import { RequesStatus } from '../../types/types';
 import { usePathname } from 'next/navigation';
+import Preloader from '../../components/preloader/Preloader';
 
 export default function IndexPage() {
   const dispatch = useAppDispatch();
@@ -66,6 +67,7 @@ export default function IndexPage() {
             disabled={ratedStatus === RequesStatus.PENDING}
           />
         </div>}
+        {ratedStatus === RequesStatus.PENDING && <Preloader />}
     </div>
   );
 }

@@ -22,10 +22,8 @@ import { useDebouncedCallback } from '@mantine/hooks';
 interface IFilters{
   withGenres?: Array<string>;
   primaryReleaseYear?: number;
-  rating: {
-    voteAverageGte?: number;
-    voteAverageLte?: number;
-  }
+  voteAverageGte?: number;
+  voteAverageLte?: number;
   sortBy: string;
 }
 
@@ -37,8 +35,6 @@ function FiltersForm(props: {genres: GenresList}) {
     filters.withGenres?.length ? getGenresNamesByIds(filters.withGenres, props.genres) : undefined);
   const [ yearsData ] = useState(GetYearsArr(RELEASE_YEAR_START));
   const [sortByVal] = useState(transformSortByKeyToValue(filters.sortBy));
-  /*const [ratingFrom, setRatingFrom] = useDebouncedState(filters.voteAverageGte, 1000);
-  const [ratingTo, setRatingTo] = useDebouncedState(filters.voteAverageLte, 1000);*/
 
   const schema = z
   .object({
@@ -54,13 +50,8 @@ function FiltersForm(props: {genres: GenresList}) {
       .max(new Date().getFullYear())
       .optional(),
     sortBy: z.nativeEnum(SortByValuesEnum),
-    rating: z.object({
-      voteAverageGte: z.coerce.number().int().min(0).max(10).optional(),
-      voteAverageLte: z.coerce.number().int().min(0).max(10).optional(),
-    })/*.refine((data) => (data.voteAverageLte < data.voteAverageGte), {
-      message: "max rating value less than min",
-      path: ['rating']
-    })*/
+    voteAverageGte: z.coerce.number().int().min(0).max(10).optional(),
+    voteAverageLte: z.coerce.number().int().min(0).max(10).optional(),
   })
 
   const {
@@ -112,14 +103,12 @@ function FiltersForm(props: {genres: GenresList}) {
 
   const handleResetFilters = useCallback(() => {
     dispatch(resetFilters());
-    setGenresSelected([]);
+    setGenresSelected(undefined);
     reset({
       withGenres: undefined,
       primaryReleaseYear: undefined,
-      rating: {
-        voteAverageLte: undefined,
-        voteAverageGte: undefined,
-      },
+      voteAverageLte: undefined,
+      voteAverageGte: undefined,
       sortBy: SORT_BY_DEFAULT_VALUE
     });
     setFormkey(Date.now());
@@ -127,13 +116,12 @@ function FiltersForm(props: {genres: GenresList}) {
 
   const onSubmit = useCallback((data: IFilters) => {
     if(!Object.keys(errors).length) {
-      console.log(data.withGenres)
       const genresIds = data.withGenres?.length ? getGenresIdsByNames(data.withGenres, props.genres) : undefined;
       const res = {
         withGenres: genresIds,
         primaryReleaseYear: data.primaryReleaseYear,
-        voteAverageLte: data.rating.voteAverageLte,
-        voteAverageGte: data.rating.voteAverageGte,
+        voteAverageLte: data.voteAverageLte,
+        voteAverageGte: data.voteAverageGte,
         sortBy: transformSortByValToKey(data.sortBy)
       }
       dispatch(setFilters(res));
@@ -156,11 +144,11 @@ function FiltersForm(props: {genres: GenresList}) {
   },[setValue]);
 
   const handleRatingFromChange = useDebouncedCallback((value: string | number) => {
-    setValue('rating.voteAverageGte', value ? Number(value) : undefined, { shouldValidate: true })
+    setValue('voteAverageGte', value ? Number(value) : undefined, { shouldValidate: true })
   }, 200);
 
   const handleRatingToChange = useDebouncedCallback((value: string | number) => {
-    setValue('rating.voteAverageLte', value ? Number(value) : undefined, { shouldValidate: true })
+    setValue('voteAverageLte', value ? Number(value) : undefined, { shouldValidate: true })
   }, 200);
 
   return (
@@ -211,7 +199,7 @@ function FiltersForm(props: {genres: GenresList}) {
           <div>
           <Controller
               control={control}
-              name='rating.voteAverageGte'
+              name='voteAverageGte'
               defaultValue={filters.voteAverageGte}
               render={({ field: { onChange, value } }) => (
                 <NumberInput
@@ -220,7 +208,7 @@ function FiltersForm(props: {genres: GenresList}) {
                   classNames={NumberInputClasses}
                   onChange={handleRatingFromChange}
                   defaultValue={value}
-                  error={errors && errors.rating?.voteAverageGte?.message}
+                  error={errors && errors?.voteAverageGte?.message}
                   min={0}
                   max={10}
                 />
@@ -230,7 +218,7 @@ function FiltersForm(props: {genres: GenresList}) {
           <div>
             <Controller
                 control={control}
-                name='rating.voteAverageLte'
+                name='voteAverageLte'
                 defaultValue={filters.voteAverageLte}
                 render={({ field: { onChange, value } }) => (
                   <NumberInput
@@ -238,7 +226,7 @@ function FiltersForm(props: {genres: GenresList}) {
                     classNames={NumberInputClasses}
                     onChange={handleRatingToChange}
                     defaultValue={value}
-                    error={errors && errors.rating?.voteAverageLte?.message}
+                    error={errors && errors?.voteAverageLte?.message}
                     min={0}
                     max={10}
                   />
