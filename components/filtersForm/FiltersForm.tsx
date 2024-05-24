@@ -112,8 +112,16 @@ function FiltersForm(props: {genres: GenresList}) {
 
   const handleResetFilters = useCallback(() => {
     dispatch(resetFilters());
-    setGenresSelected(undefined);
-    reset();
+    setGenresSelected([]);
+    reset({
+      withGenres: undefined,
+      primaryReleaseYear: undefined,
+      rating: {
+        voteAverageLte: undefined,
+        voteAverageGte: undefined,
+      },
+      sortBy: SORT_BY_DEFAULT_VALUE
+    });
     setFormkey(Date.now());
   }, [dispatch, reset]);
 
