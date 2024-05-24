@@ -4,19 +4,19 @@ import { useAppDispatch, useAppSelector } from '../../store/redux-hooks';
 import { fetchMovies, setPage } from '../../store/moviesSlice';
 import MovieCardLink from '../../components/movieCard/movieCardLink/MovieCardLink';
 import { fetchGenresList } from '../../store/genresListSlice';
-import Filters from '../../components/filters/Filters';
 import { getRatignById } from '../../utils/getRatingById';
 import CustomPagination from '../../components/customPagination/CustomPagination';
 import { RequesStatus } from '../../types/types';
 import { usePathname } from 'next/navigation';
+import FiltersForm from '../../components/filtersForm/FiltersForm';
 
 export default function IndexPage() {
   const dispatch = useAppDispatch();
   const { movies, page, totalPages, moviesStatus } = useAppSelector((state) => state.movies);
   const { genresList } = useAppSelector((state) => state.genresList);
   const { ratedIds } = useAppSelector((state) => state.rated);
-  const { withGenres, primaryReleaseYear, voteAverageLte, voteAverageGte, sortBy } = useAppSelector((state) => state.filters);
   const pathname = usePathname();
+  const { filters } = useAppSelector((state) => state.filters);
 
   useEffect(() => {
     if(!genresList.length) {
@@ -25,17 +25,18 @@ export default function IndexPage() {
   }, [dispatch, genresList.length]);
 
   const updateMovies = useCallback(() => {
+    console.log(filters)
     const searchParams = {
-      primary_release_year: primaryReleaseYear,
-      with_genres: !!withGenres?.length ? withGenres.join() : undefined,
-      "vote_average.lte": voteAverageLte,
-      "vote_average.gte": voteAverageGte,
-      sort_by: sortBy,
+      primary_release_year: filters.primaryReleaseYear,
+      with_genres: filters.withGenres?.length ? filters.withGenres.join() : undefined,
+      "vote_average.lte": filters.voteAverageLte,
+      "vote_average.gte": filters.voteAverageGte,
+      sort_by: filters.sortBy,
       page
     };
 
     dispatch(fetchMovies(searchParams));
-  },[dispatch, page, primaryReleaseYear, sortBy, voteAverageGte, voteAverageLte, withGenres])
+  },[dispatch, page, filters])
 
   useEffect(() => {
     updateMovies();
@@ -49,7 +50,7 @@ export default function IndexPage() {
     <div className={styles.movies}>
       <h1 className={styles.title}>Movies</h1>
       <div className={styles.movieFilters}>
-        { !!genresList.length && <Filters genres={genresList}/> }
+        { !!genresList.length && <FiltersForm genres={genresList}/> }
       </div>
       <div className={styles.movieCards}>
         { !!movies.length && !!genresList.length && movies.map((item) =>

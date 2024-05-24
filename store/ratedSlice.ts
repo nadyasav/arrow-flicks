@@ -76,7 +76,6 @@ const ratedSlice = createSlice({
     builder.addCase(fetchRatedMovies.fulfilled, (state, action) => {
         state.ratedStatus = RequesStatus.FULFILLED;
         state.ratedMovies = action.payload;
-        console.log(action.payload);
     });
     builder.addCase(fetchRatedMovies.pending, (state) => {
         state.ratedStatus = RequesStatus.PENDING;

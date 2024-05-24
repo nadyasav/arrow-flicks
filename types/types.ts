@@ -32,7 +32,7 @@ export type SortBy =
     'vote_count.asc' |
     'vote_count.desc';
 
-export enum SortByEnum {
+export enum SortByKeysEnum {
     'original_title.asc' = 'original_title.asc',
     'original_title.desc' = 'original_title.desc',
     'popularity.asc' = 'popularity.asc',
@@ -46,6 +46,22 @@ export enum SortByEnum {
     'vote_average.desc' = 'vote_average.desc',
     'vote_count.asc' = 'vote_count.asc',
     'vote_count.desc' = 'vote_count.desc'
+}
+
+export enum SortByValuesEnum {
+    'originalTitleAsc' = 'originalTitleAsc',
+    'originalTitleDesk' = 'originalTitleDesk',
+    'popularityAsc' = 'popularityAsc',
+    'Most Popular' = 'Most Popular',
+    'revenueAsc' = 'revenueAsc',
+    'revenueDesk' = 'revenueDesk',
+    'primaryReleaseDateAsc' = 'primaryReleaseDateAsc',
+    'titleDesc' = 'titleDesc',
+    'primaryReleaseDateDesc' = 'primaryReleaseDateDesc',
+    'voteAverageAsc' = 'voteAverageAsc',
+    'voteAverageDesc' = 'voteAverageDesc',
+    'voteCountAsc' = 'voteCountAsc',
+    'voteCountDesc' = 'voteCountDesc'
 }
 
 export interface MoviesSearchParams {
@@ -66,12 +82,14 @@ export interface GenreListEl {
 export type GenresList = Array<GenreListEl>
 
 export interface IFilters{
-    withGenres: Array<string> | undefined;
-    primaryReleaseYear: number | undefined;
-    voteAverageLte: number | undefined;
-    voteAverageGte: number | undefined;
-    sortBy: SortBy | undefined;
-  }
+    filters: {
+        withGenres: Array<string> | undefined;
+        primaryReleaseYear: number | undefined;
+        voteAverageLte: number | undefined;
+        voteAverageGte: number | undefined;
+        sortBy: SortBy;
+    }
+}
 
 export interface MoviesRes{
     page: number;

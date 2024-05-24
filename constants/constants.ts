@@ -8,7 +8,8 @@ export const API_ROUTES = {
     GENRES: `${API_BASE_URL}/3/genre/movie/list`,
 };
 
-export const SORT_BY_DEFAULT = 'popularity.desc';
+export const SORT_BY_DEFAULT_KEY = 'popularity.desc';
+export const SORT_BY_DEFAULT_VALUE = 'Most Popular';
 
 export const SortByData = {
     'original_title.asc': {
@@ -25,7 +26,7 @@ export const SortByData = {
     },
     'popularity.desc': {
       key: 'popularity.desc',
-      value: 'popularityDesk'
+      value: 'Most Popular'
     },
     'revenue.asc': {
       key: 'revenue.asc',

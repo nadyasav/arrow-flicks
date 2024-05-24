@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { API_ROUTES } from '../../../constants/constants';
 import axios from 'axios';
 import { z } from 'zod';
-import { Language, RELEASE_YEAR_START, SortByEnum } from '../../../types/types';
+import { Language, RELEASE_YEAR_START, SortByKeysEnum } from '../../../types/types';
 
 const schema = z.object({
   language: z.literal(Language.EN).optional(),
@@ -10,8 +10,8 @@ const schema = z.object({
   primary_release_year: z.coerce.number().int().min(RELEASE_YEAR_START).max(new Date().getFullYear()).optional(),
   'vote_average.lte': z.coerce.number().int().min(0).max(10).optional(),
   'vote_average.gte': z.coerce.number().int().min(0).max(10).optional(),
-  sort_by: z.nativeEnum(SortByEnum).optional(),
-  page: z.coerce.number().min(1).max(500).optional(),
+  sort_by: z.nativeEnum(SortByKeysEnum).optional(),
+  page: z.coerce.number().int().min(1).max(500).optional(),
 }).optional();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
