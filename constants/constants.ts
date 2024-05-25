@@ -11,7 +11,7 @@ export const API_ROUTES = {
 export const SORT_BY_DEFAULT_KEY = 'popularity.desc';
 export const SORT_BY_DEFAULT_VALUE = 'Most Popular';
 
-export const SortByData = {
+export const SORT_BY_DATA = {
     'original_title.asc': {
       key: 'original_title.asc',
       value: 'originalTitleAsc'

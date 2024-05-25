@@ -82,6 +82,7 @@ export interface GenreListEl {
 export type GenresList = Array<GenreListEl>
 
 export interface IFilters{
+    sortByData: Record<string, { key: string, value: string }>,
     filters: {
         withGenres: Array<string> | undefined;
         primaryReleaseYear: number | undefined;

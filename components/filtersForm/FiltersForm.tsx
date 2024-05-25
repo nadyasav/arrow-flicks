@@ -12,7 +12,7 @@ import textBtnClasses from '../../styles/textBtn.module.css';
 import NumberInputClasses from './styles/NumberInputClasses.module.css';
 
 import { IconChevronUp } from '@tabler/icons-react';
-import { SORT_BY_DEFAULT_KEY, SORT_BY_DEFAULT_VALUE, SortByData } from '../../constants/constants';
+import { SORT_BY_DEFAULT_KEY, SORT_BY_DEFAULT_VALUE } from '../../constants/constants';
 import { GetYearsArr } from '../../utils/getYearsArr';
 import { z } from 'zod';
 import { Controller, useForm } from 'react-hook-form';
@@ -27,14 +27,19 @@ interface IFilters{
   sortBy: string;
 }
 
+const filtersEmptyValues = {
+  withGenres: undefined,
+  primaryReleaseYear: undefined,
+  voteAverageLte: undefined,
+  voteAverageGte: undefined,
+  sortBy: SORT_BY_DEFAULT_VALUE
+};
+
 function FiltersForm(props: {genres: GenresList}) {
   const dispatch = useAppDispatch();
-  const { filters } = useAppSelector((state) => state.filters);
+  const { filters, sortByData } = useAppSelector((state) => state.filters);
   const [formkey, setFormkey] = useState(Date.now());
-  const [genresSelected, setGenresSelected] = useState<Array<string> | undefined>(
-    filters.withGenres?.length ? getGenresNamesByIds(filters.withGenres, props.genres) : undefined);
   const [ yearsData ] = useState(GetYearsArr(RELEASE_YEAR_START));
-  const [sortByVal] = useState(transformSortByKeyToValue(filters.sortBy));
 
   const schema = z
   .object({
@@ -67,13 +72,21 @@ function FiltersForm(props: {genres: GenresList}) {
     mode: 'onChange',
     reValidateMode: 'onChange',
     defaultValues: {
-      sortBy: sortByVal
+      withGenres: filters.withGenres?.length ? getGenresNamesByIds(filters.withGenres, props.genres) : undefined,
+      primaryReleaseYear: filters.primaryReleaseYear,
+      voteAverageGte: filters.voteAverageGte,
+      voteAverageLte: filters.voteAverageLte,
+      sortBy: sortByData[filters.sortBy].value
     }
   });
 
-  const isFiltersEmpty = () => {
-    const notEmptyValues = Object.values(getValues()).filter((item) => item !== SORT_BY_DEFAULT_VALUE && !!item);
-    return notEmptyValues.length > 0;
+  const isFiltersNotEmpty = () => {
+    const values = getValues();
+    return values.primaryReleaseYear ||
+    values.sortBy !== SORT_BY_DEFAULT_VALUE ||
+    values.voteAverageGte !== undefined ||
+    values.voteAverageLte !== undefined ||
+    values.withGenres && !!values.withGenres.length;
   }
 
   function transformGenresValToKeys(value: Array<string>, ctx: z.RefinementCtx) {
@@ -91,26 +104,14 @@ function FiltersForm(props: {genres: GenresList}) {
     return genresIds.join();
   }
 
-  function transformSortByValToKey (value: string) {
-    const sortByDataItem = Object.values(SortByData).find((item) => item.value === value);
-    return sortByDataItem?.key || SORT_BY_DEFAULT_KEY;
-  }
-
-  function transformSortByKeyToValue (key: string) {
-    const sortByDataItem = Object.values(SortByData).find((item) => item.key === key);
-    return sortByDataItem?.value || SORT_BY_DEFAULT_VALUE;
+  function getSortKeyByValue (value: string) {
+    const sortByDataItem = Object.values(sortByData).find((item) => item.value === value);
+    return sortByDataItem?.key;
   }
 
   const handleResetFilters = useCallback(() => {
     dispatch(resetFilters());
-    setGenresSelected(undefined);
-    reset({
-      withGenres: undefined,
-      primaryReleaseYear: undefined,
-      voteAverageLte: undefined,
-      voteAverageGte: undefined,
-      sortBy: SORT_BY_DEFAULT_VALUE
-    });
+    reset({...filtersEmptyValues});
     setFormkey(Date.now());
   }, [dispatch, reset]);
 
@@ -122,7 +123,7 @@ function FiltersForm(props: {genres: GenresList}) {
         primaryReleaseYear: data.primaryReleaseYear,
         voteAverageLte: data.voteAverageLte,
         voteAverageGte: data.voteAverageGte,
-        sortBy: transformSortByValToKey(data.sortBy)
+        sortBy: getSortKeyByValue(data.sortBy) || SORT_BY_DEFAULT_KEY
       }
       dispatch(setFilters(res));
     }
@@ -134,7 +135,6 @@ function FiltersForm(props: {genres: GenresList}) {
     return () => subscription.unsubscribe()
   }, [handleSubmit, onSubmit, watch])
 
-
   const handleYearChange = useCallback((value: string | null) => {
     setValue('primaryReleaseYear', value ? Number(value) : undefined, { shouldValidate: true })
   },[setValue]);
@@ -144,11 +144,11 @@ function FiltersForm(props: {genres: GenresList}) {
   },[setValue]);
 
   const handleRatingFromChange = useDebouncedCallback((value: string | number) => {
-    setValue('voteAverageGte', value ? Number(value) : undefined, { shouldValidate: true })
+    setValue('voteAverageGte', Number(value), { shouldValidate: true })
   }, 200);
 
   const handleRatingToChange = useDebouncedCallback((value: string | number) => {
-    setValue('voteAverageLte', value ? Number(value) : undefined, { shouldValidate: true })
+    setValue('voteAverageLte', Number(value), { shouldValidate: true })
   }, 200);
 
   return (
@@ -158,7 +158,6 @@ function FiltersForm(props: {genres: GenresList}) {
           <Controller
             control={control}
             name='withGenres'
-            defaultValue={genresSelected}
             render={({ field: { onChange, value } }) => (
               <MultiSelect
                 name="withGenres"
@@ -179,7 +178,6 @@ function FiltersForm(props: {genres: GenresList}) {
             <Controller
               control={control}
               name='primaryReleaseYear'
-              defaultValue={filters.primaryReleaseYear}
               render={({ field: { value } }) => (
                 <Select
                   label='Release year'
@@ -200,8 +198,7 @@ function FiltersForm(props: {genres: GenresList}) {
           <Controller
               control={control}
               name='voteAverageGte'
-              defaultValue={filters.voteAverageGte}
-              render={({ field: { onChange, value } }) => (
+              render={({ field: { value } }) => (
                 <NumberInput
                   label='Ratings'
                   placeholder='From'
@@ -219,8 +216,7 @@ function FiltersForm(props: {genres: GenresList}) {
             <Controller
                 control={control}
                 name='voteAverageLte'
-                defaultValue={filters.voteAverageLte}
-                render={({ field: { onChange, value } }) => (
+                render={({ field: { value } }) => (
                   <NumberInput
                     placeholder='To'
                     classNames={NumberInputClasses}
@@ -238,7 +234,7 @@ function FiltersForm(props: {genres: GenresList}) {
           variant="transparent" 
           className={styles.resetBtn} 
           classNames={textBtnClasses}
-          disabled={!isFiltersEmpty()}
+          disabled={!isFiltersNotEmpty()}
           onClick={handleResetFilters}
           >Reset filters</Button>
       </div>
@@ -251,7 +247,7 @@ function FiltersForm(props: {genres: GenresList}) {
               label='Sort by'
               placeholder='Select sort type'
               onChange={handleSortChange}
-              data={Object.values(SortByData).map((item) => item.value)}
+              data={Object.values(sortByData).map((item) => item.value)}
               value={value || SORT_BY_DEFAULT_VALUE}
               withCheckIcon={false}
               classNames={SelectClasses}

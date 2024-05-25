@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IFilters } from '../types/types';
-import { SORT_BY_DEFAULT_KEY } from '../constants/constants';
+import { SORT_BY_DATA, SORT_BY_DEFAULT_KEY } from '../constants/constants';
 
 const initialState: IFilters = {
+    sortByData: {...SORT_BY_DATA},
     filters: {
       withGenres: undefined,
       primaryReleaseYear: undefined,
