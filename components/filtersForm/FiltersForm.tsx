@@ -3,7 +3,7 @@ import { GenresList, RELEASE_YEAR_START, SortByValuesEnum } from '../../types/ty
 import { Button, MultiSelect, NumberInput, Select } from '@mantine/core';
 import styles from './FiltersForm.module.css';
 import { useAppDispatch, useAppSelector } from '../../store/redux-hooks';
-import { resetFilters, setFilters } from '../../store/filtersSlice';
+import { setFilters } from '../../store/filtersSlice';
 import { getGenresIdsByNames, getGenresNamesArr, getGenresNamesByIds } from '../../utils/getGenres';
 
 import MultiSelectClasses from './styles/MultiSelectClasses.module.css';
@@ -18,20 +18,25 @@ import { z } from 'zod';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDebouncedCallback } from '@mantine/hooks';
+import { validateRating } from '../../utils/validateRating';
 
 interface IFilters{
   withGenres?: Array<string>;
   primaryReleaseYear?: number;
-  voteAverageGte?: number;
-  voteAverageLte?: number;
+  rating: {
+    voteAverageGte?: number;
+    voteAverageLte?: number;
+  };
   sortBy: string;
 }
 
 const filtersEmptyValues = {
   withGenres: undefined,
   primaryReleaseYear: undefined,
-  voteAverageLte: undefined,
-  voteAverageGte: undefined,
+  rating: {
+    voteAverageLte: undefined,
+    voteAverageGte: undefined,
+  },
   sortBy: SORT_BY_DEFAULT_VALUE
 };
 
@@ -55,9 +60,13 @@ function FiltersForm(props: {genres: GenresList}) {
       .max(new Date().getFullYear())
       .optional(),
     sortBy: z.nativeEnum(SortByValuesEnum),
-    voteAverageGte: z.coerce.number().int().min(0).max(10).optional(),
-    voteAverageLte: z.coerce.number().int().min(0).max(10).optional(),
-  })
+    rating: z.object({
+      voteAverageGte: z.coerce.number().int().min(0).max(10).optional(),
+      voteAverageLte: z.coerce.number().int().min(0).max(10).optional(),
+    })
+  }).partial().refine((data) => validateRating({...data.rating}), {
+    message: "max rating value cannot be less than min",
+    path: ['rating']});
 
   const {
     handleSubmit,
@@ -74,8 +83,10 @@ function FiltersForm(props: {genres: GenresList}) {
     defaultValues: {
       withGenres: filters.withGenres?.length ? getGenresNamesByIds(filters.withGenres, props.genres) : undefined,
       primaryReleaseYear: filters.primaryReleaseYear,
-      voteAverageGte: filters.voteAverageGte,
-      voteAverageLte: filters.voteAverageLte,
+      rating: {
+        voteAverageGte: filters.voteAverageGte,
+        voteAverageLte: filters.voteAverageLte,
+      },
       sortBy: sortByData[filters.sortBy].value
     }
   });
@@ -84,8 +95,8 @@ function FiltersForm(props: {genres: GenresList}) {
     const values = getValues();
     return values.primaryReleaseYear ||
     values.sortBy !== SORT_BY_DEFAULT_VALUE ||
-    values.voteAverageGte !== undefined ||
-    values.voteAverageLte !== undefined ||
+    values.rating?.voteAverageGte !== undefined ||
+    values.rating?.voteAverageLte !== undefined ||
     values.withGenres && !!values.withGenres.length;
   }
 
@@ -110,23 +121,20 @@ function FiltersForm(props: {genres: GenresList}) {
   }
 
   const handleResetFilters = useCallback(() => {
-    dispatch(resetFilters());
     reset({...filtersEmptyValues});
     setFormkey(Date.now());
-  }, [dispatch, reset]);
+  }, [reset]);
 
   const onSubmit = useCallback((data: IFilters) => {
-    if(!Object.keys(errors).length) {
-      const genresIds = data.withGenres?.length ? getGenresIdsByNames(data.withGenres, props.genres) : undefined;
-      const res = {
-        withGenres: genresIds,
-        primaryReleaseYear: data.primaryReleaseYear,
-        voteAverageLte: data.voteAverageLte,
-        voteAverageGte: data.voteAverageGte,
-        sortBy: getSortKeyByValue(data.sortBy) || SORT_BY_DEFAULT_KEY
-      }
-      dispatch(setFilters(res));
+    const genresIds = data.withGenres?.length ? getGenresIdsByNames(data.withGenres, props.genres) : undefined;
+    const res = {
+      withGenres: genresIds,
+      primaryReleaseYear: data.primaryReleaseYear,
+      voteAverageLte: data.rating.voteAverageLte,
+      voteAverageGte: data.rating.voteAverageGte,
+      sortBy: getSortKeyByValue(data.sortBy) || SORT_BY_DEFAULT_KEY
     }
+    dispatch(setFilters(res));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[dispatch, errors]);
 
@@ -144,11 +152,11 @@ function FiltersForm(props: {genres: GenresList}) {
   },[setValue]);
 
   const handleRatingFromChange = useDebouncedCallback((value: string | number) => {
-    setValue('voteAverageGte', Number(value), { shouldValidate: true })
+    setValue('rating.voteAverageGte', typeof value === 'number' ? value : undefined, { shouldValidate: true })
   }, 200);
 
   const handleRatingToChange = useDebouncedCallback((value: string | number) => {
-    setValue('voteAverageLte', Number(value), { shouldValidate: true })
+    setValue('rating.voteAverageLte', typeof value === 'number' ? value : undefined, { shouldValidate: true })
   }, 200);
 
   return (
@@ -197,7 +205,7 @@ function FiltersForm(props: {genres: GenresList}) {
           <div>
           <Controller
               control={control}
-              name='voteAverageGte'
+              name='rating.voteAverageGte'
               render={({ field: { value } }) => (
                 <NumberInput
                   label='Ratings'
@@ -205,7 +213,7 @@ function FiltersForm(props: {genres: GenresList}) {
                   classNames={NumberInputClasses}
                   onChange={handleRatingFromChange}
                   defaultValue={value}
-                  error={errors && errors?.voteAverageGte?.message}
+                  error={errors?.rating?.voteAverageGte?.message || errors.rating?.root?.message}
                   min={0}
                   max={10}
                 />
@@ -215,14 +223,14 @@ function FiltersForm(props: {genres: GenresList}) {
           <div>
             <Controller
                 control={control}
-                name='voteAverageLte'
+                name='rating.voteAverageLte'
                 render={({ field: { value } }) => (
                   <NumberInput
                     placeholder='To'
                     classNames={NumberInputClasses}
                     onChange={handleRatingToChange}
                     defaultValue={value}
-                    error={errors && errors?.voteAverageLte?.message}
+                    error={errors?.rating?.voteAverageLte?.message || errors.rating?.root?.message}
                     min={0}
                     max={10}
                   />

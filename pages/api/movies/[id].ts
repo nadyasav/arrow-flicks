@@ -2,10 +2,12 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { API_ROUTES } from '../../../constants/constants';
 import axios from 'axios';
 import { z } from 'zod';
+import { appendToResponse } from '../../../types/types';
 
 const schema = z.object({
-  id: z.preprocess((id) => parseInt(String(id)), z.number())
-});
+  id: z.preprocess((id) => parseInt(String(id)), z.number()),
+  append_to_response: z.nativeEnum(appendToResponse).optional()
+}).strict();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {

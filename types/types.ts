@@ -15,6 +15,7 @@ export enum MoviesSearchKeys {
 }
 
 export enum Language { EN = 'en-US' }
+export enum appendToResponse { VIDEOS = 'videos' };
 export const RELEASE_YEAR_START = 1874;
 
 export type SortBy = 

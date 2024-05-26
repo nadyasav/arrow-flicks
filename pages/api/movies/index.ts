@@ -12,7 +12,7 @@ const schema = z.object({
   'vote_average.gte': z.coerce.number().int().min(0).max(10).optional(),
   sort_by: z.nativeEnum(SortByKeysEnum).optional(),
   page: z.coerce.number().int().min(1).max(500).optional(),
-}).optional();
+}).strict().optional();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const url = `${API_ROUTES.MOVIES}?api_key=${process.env.API_KEY}`;
