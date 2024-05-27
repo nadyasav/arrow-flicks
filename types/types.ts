@@ -83,14 +83,15 @@ export interface GenreListEl {
 export type GenresList = Array<GenreListEl>
 
 export interface IFilters{
-    sortByData: Record<string, { key: string, value: string }>,
-    filters: {
-        withGenres: Array<string> | undefined;
-        primaryReleaseYear: number | undefined;
-        voteAverageLte: number | undefined;
-        voteAverageGte: number | undefined;
-        sortBy: SortBy;
-    }
+    withGenres: Array<number> | undefined;
+    primaryReleaseYear: number | undefined;
+    voteAverageLte: number | undefined;
+    voteAverageGte: number | undefined;
+    sortBy: SortBy;
+}
+export interface IFiltersSlice{
+    sortByData: SortByDataType,
+    filters: IFilters;
 }
 
 export interface MoviesRes{
@@ -177,3 +178,15 @@ export interface FetchRatedParams{
     page: number;
     searchValue: string;
 }
+
+export interface IFiltersForm{
+    withGenres?: Array<string>;
+    primaryReleaseYear?: number;
+    rating: {
+      voteAverageGte?: number;
+      voteAverageLte?: number;
+    };
+    sortBy: string;
+}
+
+export type SortByDataType = Record<SortBy, { key: SortBy; value: string }>

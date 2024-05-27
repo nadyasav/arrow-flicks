@@ -43,3 +43,14 @@ export const getGenresIdsByNames = (names: Array<string>, genres: GenresList) =>
     }
     return genresIds;
 }
+
+export function transformGenresValToKeys(value: Array<string>, genres: GenresList) {
+    if(!value.length) {
+      return '';
+    }
+    const genresIds = getGenresIdsByNames(value, genres);
+    if (!genresIds.length) {
+      return false;
+    }
+    return true;
+}

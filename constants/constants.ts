@@ -1,3 +1,5 @@
+import { SortByDataType } from "../types/types";
+
 export const API_BASE_URL = 'https://api.themoviedb.org';
 
 export const IMG_URL = 'https://image.tmdb.org/t/p/original';
@@ -11,7 +13,7 @@ export const API_ROUTES = {
 export const SORT_BY_DEFAULT_KEY = 'popularity.desc';
 export const SORT_BY_DEFAULT_VALUE = 'Most Popular';
 
-export const SORT_BY_DATA = {
+export const SORT_BY_DATA: SortByDataType = {
     'original_title.asc': {
       key: 'original_title.asc',
       value: 'originalTitleAsc'
