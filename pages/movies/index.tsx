@@ -1,12 +1,12 @@
 import styles from './index.module.scss';
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from '../../store/redux-hooks';
 import { fetchMovies, setPage } from '../../store/moviesSlice';
 import MovieCardLink from '../../components/movieCard/movieCardLink/MovieCardLink';
 import { fetchGenresList } from '../../store/genresListSlice';
 import { getRatignById } from '../../utils/getRatingById';
 import CustomPagination from '../../components/customPagination/CustomPagination';
-import { RequesStatus } from '../../types/types';
+import { MoviesSearchParams, RequesStatus } from '../../types/types';
 import { usePathname } from 'next/navigation';
 import FiltersForm from '../../components/filtersForm/FiltersForm';
 import Preloader from '../../components/preloader/Preloader';
@@ -18,6 +18,7 @@ export default function IndexPage() {
   const { ratedIds } = useAppSelector((state) => state.rated);
   const pathname = usePathname();
   const { filters } = useAppSelector((state) => state.filters);
+  const prevSearchParams = useRef<MoviesSearchParams>();
 
   useEffect(() => {
     if(!genresList.length) {
@@ -35,7 +36,21 @@ export default function IndexPage() {
       page
     };
 
-    dispatch(fetchMovies(searchParams));
+    const requestMovies = () => {
+      prevSearchParams.current = {...searchParams};
+      dispatch(fetchMovies(searchParams));
+    };
+
+    if(!prevSearchParams.current) {
+      requestMovies();
+    } else if(isNewSearchParams(prevSearchParams.current, searchParams)){
+      if(page === prevSearchParams.current.page && page !== 1) {
+        dispatch(setPage(1))
+      } else {
+        requestMovies();
+      }
+    }
+
   },[dispatch, page, filters])
 
   useEffect(() => {
@@ -78,4 +93,15 @@ export default function IndexPage() {
       genresListStatus === RequesStatus.PENDING) && <Preloader />}
       </>
   );
+}
+
+const isNewSearchParams = (prevParams: MoviesSearchParams, params: MoviesSearchParams): boolean => {
+  const prevArr = Object.values(prevParams);
+  const nextArr = Object.values(params);
+  for(let i = 0; i < prevArr.length; i++){
+    if(prevArr[i] !== nextArr[i]) {
+      return true
+    }
+  }
+  return false;
 }
