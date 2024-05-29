@@ -1,7 +1,7 @@
 import styles from './index.module.scss';
 import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from '../../store/redux-hooks';
-import { fetchRatedMovies, setPage } from '../../store/ratedSlice';
+import { fetchRatedMovies, setPage, setRatedIds } from '../../store/ratedSlice';
 import MovieCardLink from '../../components/movieCard/movieCardLink/MovieCardLink';
 import { getRatignById } from '../../utils/getRatingById';
 import { SearchField } from '../../components/searchField/SearchField';
@@ -9,6 +9,8 @@ import CustomPagination from '../../components/customPagination/CustomPagination
 import { RequesStatus } from '../../types/types';
 import { usePathname } from 'next/navigation';
 import Preloader from '../../components/preloader/Preloader';
+import EmptySearchState from '../../components/emptySearchState/EmptySearchState';
+import EmptyState from '../../components/emptyState/EmptyState';
 
 export default function IndexPage() {
   const dispatch = useAppDispatch();
@@ -16,12 +18,12 @@ export default function IndexPage() {
   const [searchValue, setSearchValue] = useState('');
   const pathname = usePathname();
 
-  useEffect(
-    () => () => {
-      dispatch(setPage(1));
-    },
-    [dispatch]
-  );
+  useEffect(() => {
+    dispatch(setRatedIds());
+    return () => {
+      dispatch(setPage(1))
+    };
+  },[dispatch]);
 
   useEffect(() => {
     dispatch(fetchRatedMovies({
@@ -40,34 +42,45 @@ export default function IndexPage() {
   }, [dispatch]);
 
   return (
-    <div className={styles.movies}>
-      <div className={styles.moviesTop}>
-        <h1>Rated movies</h1>
-        <div className={styles.searchField}>
-          <SearchField onSearch={handleSearch} />
-        </div>
-      </div>
-      <div className={styles.movieCards}>
-        { !!ratedMovies.movies.length && ratedMovies.movies.map((item) =>
-          <div key={item.id} className={styles.movieCardsItem}>
-            <MovieCardLink
-              movie={item}
-              rating={getRatignById(item.id, ratedIds)}
-              genres={item.genres}
-              searchValue={searchValue}
-              rootPath={pathname} />
-          </div>)}
-      </div>
-      { !!ratedMovies.movies.length &&
-        <div className={styles.pagination}>
-          <CustomPagination
-            value={ratedMovies.page}
-            onChange={handlePageOnChange}
-            total={ratedMovies.totalPages}
-            disabled={ratedStatus === RequesStatus.PENDING}
-          />
-        </div>}
-        {ratedStatus === RequesStatus.PENDING && <Preloader />}
-    </div>
+    <>
+      {!!ratedIds.length ? 
+        <div className={styles.movies}>
+          <div className={styles.moviesTop}>
+            <h1>Rated movies</h1>
+            <div className={styles.searchField}>
+              <SearchField onSearch={handleSearch} />
+            </div>
+          </div>
+          <div className={styles.movieCards}>
+            { !!ratedMovies.movies.length ?
+              ratedMovies.movies.map((item) =>
+              <div key={item.id} className={styles.movieCardsItem}>
+                <MovieCardLink
+                  movie={item}
+                  rating={getRatignById(item.id, ratedIds)}
+                  genres={item.genres}
+                  searchValue={searchValue}
+                  rootPath={pathname} />
+              </div>) :
+              !!searchValue &&
+              ratedStatus !== RequesStatus.PENDING &&
+              ratedStatus !== RequesStatus.INIT &&
+              <EmptySearchState />}
+          </div>
+          { !!ratedMovies.movies.length &&
+            <div className={styles.pagination}>
+              <CustomPagination
+                value={ratedMovies.page}
+                onChange={handlePageOnChange}
+                total={ratedMovies.totalPages}
+                disabled={ratedStatus === RequesStatus.PENDING}
+              />
+            </div>}
+          {ratedStatus === RequesStatus.PENDING && <Preloader />}
+        </div> :
+        ratedStatus !== RequesStatus.PENDING &&
+        ratedStatus !== RequesStatus.INIT &&
+        <EmptyState withLogo={false} type='movies' />}
+    </>
   );
 }

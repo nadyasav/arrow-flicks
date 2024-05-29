@@ -10,6 +10,7 @@ import { MoviesSearchParams, RequesStatus } from '../../types/types';
 import { usePathname } from 'next/navigation';
 import FiltersForm from '../../components/filtersForm/FiltersForm';
 import Preloader from '../../components/preloader/Preloader';
+import EmptySearchState from '../../components/emptySearchState/EmptySearchState';
 
 export default function IndexPage() {
   const dispatch = useAppDispatch();
@@ -69,7 +70,8 @@ export default function IndexPage() {
         { !!genresList.length && <FiltersForm genres={genresList}/> }
       </div>
       <div className={styles.movieCards}>
-        { !!movies.length && !!genresList.length && movies.map((item) =>
+        { !!movies.length && !!genresList.length ?
+          movies.map((item) =>
           <div key={item.id} className={styles.movieCardsItem}>
             <MovieCardLink 
             movie={item} 
@@ -77,7 +79,11 @@ export default function IndexPage() {
             rating={getRatignById(item.id, ratedIds)} 
             genresIds={item.genre_ids || []}
             rootPath={pathname} />
-          </div>)}
+          </div>) :
+          moviesStatus !== RequesStatus.PENDING &&
+          moviesStatus !== RequesStatus.INIT &&
+          moviesStatus !== RequesStatus.REJECTED &&
+          <EmptySearchState />}
       </div>
       { !!movies.length && 
         <div className={styles.pagination}>

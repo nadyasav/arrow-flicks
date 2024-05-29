@@ -11,8 +11,8 @@ interface IRatedSlice {
 }
 
 const initialState: IRatedSlice = {
-  ratedIds: typeof window === "undefined" ? [] : getLocalStorage('ratedMovies'),
-  ratedStatus: '',
+  ratedIds: [],
+  ratedStatus: RequesStatus.INIT,
   ratedMovies: {
     movies: [],
     page: 1,
@@ -49,6 +49,9 @@ const ratedSlice = createSlice({
   name: 'rated',
   initialState,
   reducers: {
+    setRatedIds: (state) => {
+      state.ratedIds = typeof window === "undefined" ? [] : getLocalStorage('ratedMovies');
+    },
     resetRatedMovies: (state) => {
       state.ratedMovies.movies = [];
     },
@@ -87,5 +90,5 @@ const ratedSlice = createSlice({
   },
 });
 
-export const { resetRatedMovies, setPage, addRated, removeRatedById } = ratedSlice.actions;
+export const { resetRatedMovies, setPage, addRated, removeRatedById, setRatedIds } = ratedSlice.actions;
 export default ratedSlice;
