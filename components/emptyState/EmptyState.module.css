@@ -8,6 +8,10 @@
 }
 .notFaund {
   min-height: 100vh;
+
+  & .contentInner {
+    margin-top: -35px;
+  }
 }
 .logoBox {
   width: 100%;
@@ -23,6 +27,7 @@
 .contentInner {
   display: flex;
   flex-direction: column;
+  margin-top: 35px;
 }
 .imgBox {
   width: 100%;

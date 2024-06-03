@@ -12,7 +12,7 @@ interface IMoviesSlice {
 
 const initialState: IMoviesSlice = {
   movies: [],
-  moviesStatus: '',
+  moviesStatus: RequesStatus.INIT,
   page: 1,
   totalPages: 1,
 };

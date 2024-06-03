@@ -1,5 +1,5 @@
 .preloaderBox {
-  position: absolute;
+  position: fixed;
   width: calc(100% - 280px);
   height: 100%;
   top: 0;

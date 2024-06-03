@@ -1,4 +1,5 @@
 export enum RequesStatus {
+    INIT = 'init',
     PENDING = 'pending',
     FULFILLED = "fulfilled",
     REJECTED = "rejected"
