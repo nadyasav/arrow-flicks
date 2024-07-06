@@ -25,7 +25,7 @@ export default function MoviePage() {
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useAppDispatch();
-  const { movie, movieStatus } = useAppSelector((state) => state.movie);
+  const { movie, movieStatus, movieStatusCode } = useAppSelector((state) => state.movie);
   const { ratedIds } = useAppSelector((state) => state.rated);
   const pathame = usePathname();
   const rootLink = getRootPath(pathame)
@@ -52,19 +52,22 @@ export default function MoviePage() {
     }
   }, [dispatch, id]);
 
+  useEffect(() => {
+    if(movieStatusCode === 404) {
+      router.push('/404')
+    }
+  }, [movieStatusCode, router]);
+
   return (
     <>
-      <div className={styles.movie}>
-        <Breadcrumbs className={styles.breadcrumbs}>{breadcrumbsItems}</Breadcrumbs>
-        {movie && 
-          <>
-            <MovieCardDetailed movie={movie} rating={getRatignById(movie.id, ratedIds)}/>
-
-            {hasAnyMovieDetails(movie) && 
-              <MovieDetails videos={movie.videos?.results || []} 
-                overview={movie.overview} companies={movie.production_companies} />}
-          </>}
-      </div>
+      {movie &&
+        <div className={styles.movie}>
+          <Breadcrumbs className={styles.breadcrumbs}>{breadcrumbsItems}</Breadcrumbs>
+          <MovieCardDetailed movie={movie} rating={getRatignById(movie.id, ratedIds)}/>
+          {hasAnyMovieDetails(movie) && 
+            <MovieDetails videos={movie.videos?.results || []} 
+              overview={movie.overview} companies={movie.production_companies} />}
+        </div>}
       {movieStatus === RequesStatus.PENDING && <Preloader />}
     </>
   );

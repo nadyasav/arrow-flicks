@@ -148,7 +148,6 @@ export interface MovieSingle extends IMovie{
 export interface ErrorRes {
     status_code: number;
     status_message: string;
-    success: false;
 }
 
 export interface Genre {

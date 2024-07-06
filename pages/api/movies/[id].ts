@@ -24,10 +24,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if(error.response) {
         res.status(error.response.status).json(error.response.data);
       } else {
-        res.status(500).json({ error: 'failed to fetch data' });
+        res.status(500).json({ status_code: 500, status_message: 'failed to fetch data' });
       }
     });
   } catch(e) {
-    return res.status(400).json({ error: 'invalid query params' });
+    return res.status(404).json({ status_code: 404, status_message: 'Not found' });
   }
 }
