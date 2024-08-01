@@ -44,13 +44,16 @@ export const getGenresIdsByNames = (names: Array<string>, genres: GenresList) =>
     return genresIds;
 }
 
-export function transformGenresValToKeys(value: Array<string>, genres: GenresList) {
-    if(!value.length) {
-      return '';
+export function geFilteredGenres(names: Array<string>, genres: Array<Genre>): Array<string> {
+    const resultArr = [];
+    for(let i = 0; i < names.length; i++){
+        const genre = genres.find((item) => item.name == names[i]);
+
+        if(!genre){
+            continue;
+        }
+
+        resultArr.push(genre.name);
     }
-    const genresIds = getGenresIdsByNames(value, genres);
-    if (!genresIds.length) {
-      return false;
-    }
-    return true;
+    return resultArr;
 }

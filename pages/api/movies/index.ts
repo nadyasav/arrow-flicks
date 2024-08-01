@@ -8,8 +8,8 @@ const schema = z.object({
   language: z.literal(Language.EN).optional(),
   with_genres: z.string().regex(/^[0-9]+(,[0-9]+)*$/).optional(),
   primary_release_year: z.coerce.number().int().min(RELEASE_YEAR_START).max(new Date().getFullYear()).optional(),
-  'vote_average.lte': z.coerce.number().int().min(0).max(10).optional(),
-  'vote_average.gte': z.coerce.number().int().min(0).max(10).optional(),
+  'vote_average.lte': z.coerce.number().min(0).max(10).optional(),
+  'vote_average.gte': z.coerce.number().min(0).max(10).optional(),
   sort_by: z.nativeEnum(SortByKeysEnum).optional(),
   page: z.coerce.number().int().min(1).max(500).optional(),
 }).strict().optional();

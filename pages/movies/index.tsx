@@ -6,11 +6,11 @@ import MovieCardLink from '../../components/movieCard/movieCardLink/MovieCardLin
 import { fetchGenresList } from '../../store/genresListSlice';
 import { getRatignById } from '../../utils/getRatingById';
 import CustomPagination from '../../components/customPagination/CustomPagination';
-import { MoviesSearchParams, RequesStatus } from '../../types/types';
+import { FiltersRequestParams, MoviesSearchParams, RequesStatus } from '../../types/types';
 import { usePathname } from 'next/navigation';
-import FiltersForm from '../../components/filtersForm/FiltersForm';
 import Preloader from '../../components/preloader/Preloader';
 import EmptySearchState from '../../components/emptySearchState/EmptySearchState';
+import FiltersForm from '../../components/filtersForm/FiltersForm';
 
 export default function IndexPage() {
   const dispatch = useAppDispatch();
@@ -18,7 +18,6 @@ export default function IndexPage() {
   const { genresList, genresListStatus } = useAppSelector((state) => state.genresList);
   const { ratedIds } = useAppSelector((state) => state.rated);
   const pathname = usePathname();
-  const { filters } = useAppSelector((state) => state.filters);
   const prevSearchParams = useRef<MoviesSearchParams>();
 
   useEffect(() => {
@@ -27,17 +26,14 @@ export default function IndexPage() {
     }
   }, [dispatch, genresList.length]);
 
-  const updateMovies = useCallback(() => {
+  const updateMovies = useCallback((params: FiltersRequestParams) => {
     const searchParams = {
-      primary_release_year: filters.primaryReleaseYear,
-      with_genres: filters.withGenres?.length ? filters.withGenres.join() : undefined,
-      "vote_average.lte": filters.voteAverageLte,
-      "vote_average.gte": filters.voteAverageGte,
-      sort_by: filters.sortBy,
+      ...params,
       page
-    };
+    }
 
     const requestMovies = () => {
+      console.log('searchParams : ', searchParams);
       prevSearchParams.current = {...searchParams};
       dispatch(fetchMovies(searchParams));
     };
@@ -52,11 +48,7 @@ export default function IndexPage() {
       }
     }
 
-  },[dispatch, page, filters])
-
-  useEffect(() => {
-    updateMovies();
-  }, [dispatch, updateMovies]);
+  },[dispatch, page])
 
   const handlePageOnChange = useCallback((value: number) => {
     dispatch(setPage(value))
@@ -67,7 +59,7 @@ export default function IndexPage() {
     <div className={styles.movies}>
       <h1 className={styles.title}>Movies</h1>
       <div className={styles.movieFilters}>
-        { !!genresList.length && <FiltersForm genres={genresList}/> }
+        { !!genresList.length && <FiltersForm genres={genresList} onSubmit={updateMovies}/> }
       </div>
       <div className={styles.movieCards}>
         { !!movies.length && !!genresList.length ?

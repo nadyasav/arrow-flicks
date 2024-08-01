@@ -76,24 +76,14 @@ export interface MoviesSearchParams {
     page?: number;
 }
 
+export type FiltersRequestParams = Omit<MoviesSearchParams, 'language' | 'page'>;
+
 export interface GenreListEl {
     id: number;
     name: string;
 }
 
 export type GenresList = Array<GenreListEl>
-
-export interface IFilters{
-    withGenres: Array<number> | undefined;
-    primaryReleaseYear: number | undefined;
-    voteAverageLte: number | undefined;
-    voteAverageGte: number | undefined;
-    sortBy: SortBy;
-}
-export interface IFiltersSlice{
-    sortByData: SortByDataType,
-    filters: IFilters;
-}
 
 export interface MoviesRes{
     page: number;
@@ -189,4 +179,12 @@ export interface IFiltersForm{
     sortBy: string;
 }
 
-export type SortByDataType = Record<SortBy, { key: SortBy; value: string }>
+export type SortByDataType = Record<string, { key: SortBy; value: string }>
+
+export interface IFilters{
+    with_genres?: Array<string>;
+    primary_release_year?: number;
+    "vote_average.lte"?: number;
+    "vote_average.gte"?: number;
+    sort_by: SortBy;
+}
